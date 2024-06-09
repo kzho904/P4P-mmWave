@@ -3,3 +3,6 @@
 
 # ignore .idea folder
 *.idea/
+
+# ignore config.py
+config.py

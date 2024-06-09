@@ -12,10 +12,9 @@ All the limits are set as [a, b)
 import socket
 import tkinter as tk
 import tkinter.font as tkf
-import config
 from multiprocessing import Process, Manager
 from time import sleep
-
+import config
 import winsound
 
 # import modules
@@ -43,6 +42,7 @@ except:
 
 # import module configs
 hostname = socket.gethostname()
+print('Hostname is ' + hostname)
 if hostname == 'IT077979RTX2080':
     from cfg.config_mvb501 import *
 elif hostname == 'IT084378':

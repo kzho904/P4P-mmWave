@@ -58,7 +58,7 @@ from parser_mmw_demo import parser_one_mmw_demo_output_packet
 #     print ("Error: provide file name of the saved stream from Visualizer for OOB demo")
 #     exit()
 
-capturedFileName = 'xwr18xx_processed_stream_2022_05_28T18_43_54_289.dat'
+capturedFileName = 'ti\mmwave_studio_02_01_01_00\mmWaveStudio\PostProc\adc_data.dat'
 
 ##################################################################################
 # USE parser_mmw_demo SCRIPT TO PARSE ABOVE INPUT FILES
