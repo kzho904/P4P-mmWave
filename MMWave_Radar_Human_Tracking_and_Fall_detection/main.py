@@ -15,7 +15,7 @@ import tkinter.font as tkf
 from multiprocessing import Process, Manager
 from time import sleep
 import config
-import winsound
+# import winsound
 
 # import modules
 from library import RadarReader, Visualizer, SyncMonitor
@@ -23,6 +23,7 @@ try:
     from library import SaveCenter
     SVC_enable = True
 except:
+    print("save center cannot be imported")
     pass
 try:
     from library import Camera
@@ -50,7 +51,7 @@ elif hostname == 'IT084378':
 elif hostname == 'IT080027':
     from cfg.config_cp107 import *
 elif hostname == config.hostname:
-    from cfg.config_cp107 import *
+    from cfg.config_test import *
 else:
     raise Exception('Hostname is not found!')
 
@@ -90,10 +91,10 @@ def vidcompress_proc_method(_run_flag, _shared_param_dict, **_kwargs_CFG):
     vidcompress.run()
 
 
-def test_proc_method(_run_flag, _radar_rd_queue_list):
+def test_proc_method(_run_flag, _shared_param_dict):
     _run_flag = _run_flag
-    _manual_save_flag = _mp_value_dict['manual_save']
-    _auto_save_flag = _mp_value_dict['auto_save']
+    _manual_save_flag = _shared_param_dict['mansave_flag']
+    _auto_save_flag = _shared_param_dict['autosave_flag']
 
     def gui_button_style():
         style = tkf.Font(family='Calibri', size=16, weight=tkf.BOLD, underline=False, overstrike=False)
@@ -101,20 +102,20 @@ def test_proc_method(_run_flag, _radar_rd_queue_list):
 
     def shot():
         if not _auto_save_flag.value:
-            _auto_save_flag.value = True
+           _auto_save_flag.value = True
         else:
             _auto_save_flag.value = False
 
     def quit():
         _run_flag.value = False
         top.destroy()
-
+        
     top = tk.Tk()
     top.wm_attributes('-topmost', 1)  # keep the window at the top
     top.overrideredirect(True)  # remove label area
     top.geometry('+40+510')
     top.resizable(False, False)
-    tk.Button(top, text='Shot', bg='lightblue', width=12, font=gui_button_style(), command=shot).grid(row=1, column=1)
+    tk.Button(top, text='Capture', bg='lightblue', width=12, font=gui_button_style(), command=shot).grid(row=1, column=1)
     tk.Button(top, text='Quit', bg='lightblue', width=12, font=gui_button_style(), command=quit).grid(row=1, column=2)
     top.mainloop()
 
@@ -152,6 +153,7 @@ if __name__ == '__main__':
     proc_list.append(vis_proc)
     monitor_proc = Process(target=monitor_proc_method, args=(run_flag, radar_rd_queue_list, shared_param_dict), kwargs=kwargs_CFG)
     proc_list.append(monitor_proc)
+    
 
     # optional processes, can be disabled
     try:
@@ -161,21 +163,22 @@ if __name__ == '__main__':
             save_proc = Process(target=save_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
             proc_list.append(save_proc)
     except:
+        print("save center cannot be enabled")
         pass
-    try:
-        kwargs_CFG.update({'CAMERA_CFG': CAMERA_CFG})
-        if CAM_enable:
-            camera_proc = Process(target=camera_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
-            proc_list.append(camera_proc)
-    except:
-        pass
-    try:
-        kwargs_CFG.update({'EMAIL_NOTIFIER_CFG': EMAIL_NOTIFIER_CFG})
-        if EMN_enable:
-            email_proc = Process(target=email_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
-            proc_list.append(email_proc)
-    except:
-        pass
+    # try:
+    #     kwargs_CFG.update({'CAMERA_CFG': CAMERA_CFG})
+    #     if CAM_enable:
+    #         camera_proc = Process(target=camera_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
+    #         proc_list.append(camera_proc)
+    # except:
+    #     pass
+    # try:
+    #     kwargs_CFG.update({'EMAIL_NOTIFIER_CFG': EMAIL_NOTIFIER_CFG})
+    #     if EMN_enable:
+    #         email_proc = Process(target=email_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
+    #         proc_list.append(email_proc)
+    # except:
+    #     pass
     # try:
     #     kwargs_CFG.update({'VIDEO_COMPRESSOR_CFG': VIDEO_COMPRESSOR_CFG})
     #     if VDC_enable:
@@ -184,8 +187,8 @@ if __name__ == '__main__':
     # except:
     #     pass
 
-    # test_proc = Process(target=test_proc_method, args=(run_flag, radar_rd_queue_list))
-    # proc_list.append(test_proc)
+    test_proc = Process(target=test_proc_method, args=(run_flag, shared_param_dict))
+    proc_list.append(test_proc)
 
     # start the processes and wait to finish
     for t in proc_list:
@@ -195,4 +198,4 @@ if __name__ == '__main__':
         t.join()
         sleep(0.2)
 
-    winsound.Beep(1000, 500)
+    # winsound.Beep(1000, 500)

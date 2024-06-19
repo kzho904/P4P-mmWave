@@ -9,7 +9,7 @@ from multiprocessing import Manager
 
 import matplotlib
 import numpy as np
-import winsound
+# import winsound
 from matplotlib import pyplot as plt
 from matplotlib.ticker import LinearLocator
 
@@ -197,8 +197,9 @@ class Visualizer:
                 obj_cp, obj_status = person.get_info()
                 obj_status_list.append(obj_status)
                 self._plot(ax1, obj_cp[:, 0], obj_cp[:, 1], obj_cp[:, 2], marker='o', color=OS_colormap[obj_status])
-                if obj_status == 3:  # warning when object falls
-                    winsound.Beep(1000, 20)
+                # if obj_status == 3:  # warning when object falls
+                #     winsound.Beep(1000, 20)
+                    
 
             # auto save based on object detection
             if self.AUTOSAVE_ENABLE:
