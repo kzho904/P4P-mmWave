@@ -129,17 +129,17 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
 
 
 if __name__ == '__main__':
-    RADAR_CFG = {'name'          : 'test',
-                 'cfg_port_name' : 'COM3',
-                 'data_port_name': 'COM4',
-                 'cfg_file_name' : './cfg/IWR1843_3D.cfg',  # always use 3D data as input
-                 'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
-                 'ylim'          : (0.25, 4),
-                 'zlim'          : None,
-                 'pos_offset'    : (0, 0, 0.8),  # default pos_offset is (0, 0, 0)
-                 'facing_angle'  : {'angle': (0, -60, 90), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
-                 'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
-                 }
+    RADAR_CFG = {'name'          : 'IWR1843_Ori',
+                'cfg_port_name' : '/dev/tty.usbmodemR21010501',
+                'data_port_name': '/dev/tty.usbmodemR21010504',
+                'cfg_file_name' : './cfg/IWR1843_3D_5fps_9db.cfg',  # always use 3D data as input
+                'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
+                'ylim'          : (0.25, 4),
+                'zlim'          : None,
+                'pos_offset'    : (0, 0, 1),  # default pos_offset is (0, 0, 0)
+                'facing_angle'  : {'angle': (0, 0, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
+                'ES_threshold'  : {'range': (0, None), 'speed_none_0_exception': False},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
+                }
     FRAME_EARLY_PROCESSOR_CFG = {  # early process config
         'FEP_frame_deque_length': 10,  # the number of frame stacked
     }

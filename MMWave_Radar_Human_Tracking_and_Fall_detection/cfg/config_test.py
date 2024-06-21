@@ -1,7 +1,7 @@
 import config
 # global save parameters
 EXPERIMENT_NAME = 'test'
-RADAR_FPS = 10  #10 frames per second, 100ms per frame
+RADAR_FPS = 5  #10 frames per second, 100ms per frame
 CAMERA_FPS = 30  # 30 frames per second, lower under worse light condition
 # manual save
 MANSAVE_ENABLE = False  # this controls the flag from the source
@@ -32,7 +32,7 @@ FRAME_EARLY_PROCESSOR_CFG = {  # early process config
 
 # single class instantiated, single config used
 VISUALIZER_CFG = {
-    'dimension'               : '2D',  # only effect visualizer demo,
+    'dimension'               : '3D',  # only effect visualizer demo,
     'VIS_xlim'                : (-2, 1),
     'VIS_ylim'                : (0, 6),
     'VIS_zlim'                : (0, 2),
