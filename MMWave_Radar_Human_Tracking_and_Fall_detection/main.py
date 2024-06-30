@@ -51,8 +51,8 @@ elif hostname == 'IT084378':
 elif hostname == 'IT080027':
     from cfg.config_cp107 import *
 elif hostname == config.hostname:
-    from cfg.config_test import *
-else:
+    from cfg.config_maggs303 import *
+else: 
     raise Exception('Hostname is not found!')
 
 

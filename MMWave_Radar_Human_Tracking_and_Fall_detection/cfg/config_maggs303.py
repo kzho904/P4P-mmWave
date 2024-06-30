@@ -12,8 +12,8 @@ AUTOSAVE_PERIOD = 600  # second, the max time period saved for auto save (radar)
 # multiple class instantiated, multiple config used
 RADAR_CFG_LIST = [
     {'name'          : 'IWR1843_Ori',
-     'cfg_port_name' : 'COM6',
-     'data_port_name': 'COM5',
+     'cfg_port_name' : 'COM11',
+     'data_port_name': 'COM9',
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 4),
@@ -24,8 +24,8 @@ RADAR_CFG_LIST = [
      },
 
     {'name'          : 'IWR1843_Side',
-     'cfg_port_name' : 'COM15',
-     'data_port_name': 'COM16',
+     'cfg_port_name' : 'COM24',
+     'data_port_name': 'COM25',
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 4),
@@ -33,18 +33,6 @@ RADAR_CFG_LIST = [
      'pos_offset'    : (1.7, 1.6, 1),  # default pos_offset is (0, 0, 0)
      'facing_angle'  : {'angle': (0, 0, 90), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
      'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
-     },
-
-    {'name'          : 'IWR1843_Top',
-     'cfg_port_name' : 'COM8',
-     'data_port_name': 'COM7',
-     'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
-     'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
-     'ylim'          : (0.25, 4),
-     'zlim'          : None,
-     'pos_offset'    : (0, 1.6, 2.45),  # default pos_offset is (0, 0, 0)
-     'facing_angle'  : {'angle': (-90, 0, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
-     'ES_threshold'  : {'range': (150, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 ]
 
