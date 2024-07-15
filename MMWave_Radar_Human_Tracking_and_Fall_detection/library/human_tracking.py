@@ -21,6 +21,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
+        print("tracking people")
         for i in range(TRK_CFG['TRK_obj_bin_number']):  # create objects based on the maximum number
             self.TRK_people_list.append(HumanObject(name=str(i), **kwargs_CFG))
         self.TRK_poss_clus_deque = deque([], TRK_CFG['TRK_poss_clus_deque_length'])
@@ -51,6 +52,9 @@ class HumanTracking(DataProcessor):
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)
         for c in range(len(poss_clus_list)):  # for each cluster
             for p in range(len(self.TRK_people_list)):  # for each object bin
+                #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
+                print(poss_clus_list[c])
+                print(p)
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
 
         # keep finding the global maximum value of the possibility matrix until no values above 0

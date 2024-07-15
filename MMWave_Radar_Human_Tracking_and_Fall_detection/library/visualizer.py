@@ -163,7 +163,7 @@ class Visualizer:
         # apply global energy strength filter
         val_data_allradar, global_ES_noise = self.fpp.FPP_ES_Speed_filter(val_data_allradar)
         # apply background noise filter
-        val_data_allradar = self.fpp.BGN_filter(val_data_allradar)
+        #val_data_allradar = self.fpp.BGN_filter(val_data_allradar)
 
         # draw signal energy strength
         for i in range(len(ES_colormap)):
