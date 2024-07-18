@@ -20,7 +20,7 @@ RADAR_CFG_LIST = [
      'ylim'          : (0.25, 5),
      'zlim'          : None,
      'pos_offset'    : (0, 0, 2.2),  # default pos_offset is (0, 0, 0)
-     'facing_angle'  : {'angle': (-30, 0, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
+     'facing_angle'  : {'angle': (-30, 180, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
      'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 ]

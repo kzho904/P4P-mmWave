@@ -16,22 +16,22 @@ RADAR_CFG_LIST = [
      'data_port_name': 'COM9',
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
-     'ylim'          : (2, 6),
+     'ylim'          : (0.25, 6),
      'zlim'          : None,
      'pos_offset'    : (-0.8, 0, 2),  # default pos_offset is (0, 0, 0)
-     'facing_angle'  : {'angle': (0, -30, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
+     'facing_angle'  : {'angle': (-30, 180, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
      'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 
-    {'name'          : 'IWR1843_Side',
-     'cfg_port_name' : 'COM23',
-     'data_port_name': 'COM22',
+     {'name'          : 'IWR1843_Side',
+     'cfg_port_name' : 'COM24',
+     'data_port_name': 'COM25',
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
-     'ylim'          : (2, 6),
+     'ylim'          : (0.25, 6),
      'zlim'          : None,
-     'pos_offset'    : (0.8, 4.75, 2),  # default pos_offset is (0, 0, 0)
-     'facing_angle'  : {'angle': (0, -30, 180), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
+     'pos_offset'    : (0.8, 4.75, 2.2),  # default pos_offset is (0, 0, 0)
+     'facing_angle'  : {'angle': (30, 180, 180), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
      'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 ]
@@ -45,7 +45,7 @@ FRAME_EARLY_PROCESSOR_CFG = {  # early process config
 VISUALIZER_CFG = {
     'dimension'               : '3D',  # only effect visualizer demo,
     'VIS_xlim'                : (-3, 3),
-    'VIS_ylim'                : (0, 6),
+    'VIS_ylim'                : (0, 4.75),
     'VIS_zlim'                : (0, 2),
 
     'auto_inactive_skip_frame': int(1 * RADAR_FPS),  # frames, the time period will be skipped when auto is inactive
