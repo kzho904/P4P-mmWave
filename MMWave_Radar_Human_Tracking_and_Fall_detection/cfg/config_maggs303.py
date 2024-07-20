@@ -1,3 +1,4 @@
+import config
 # global save parameters
 EXPERIMENT_NAME = 'test'
 RADAR_FPS = 20  # 20 frames per second, 50ms per frame
@@ -12,8 +13,8 @@ AUTOSAVE_PERIOD = 600  # second, the max time period saved for auto save (radar)
 # multiple class instantiated, multiple config used
 RADAR_CFG_LIST = [
     {'name'          : 'IWR1843_Ori',
-     'cfg_port_name' : 'COM11',
-     'data_port_name': 'COM9',
+     'cfg_port_name' : config.cfg0_port_name,
+     'data_port_name': config.data0_port_name,
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
@@ -24,13 +25,13 @@ RADAR_CFG_LIST = [
      },
 
      {'name'          : 'IWR1843_Side',
-     'cfg_port_name' : 'COM24',
-     'data_port_name': 'COM25',
+     'cfg_port_name' : config.cfg1_port_name,
+     'data_port_name': config.data1_port_name,
      'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
-     'pos_offset'    : (0.8, 4.75, 2.2),  # default pos_offset is (0, 0, 0)
+     'pos_offset'    : (0.8, 4.81, 2.2),  # default pos_offset is (0, 0, 0)
      'facing_angle'  : {'angle': (30, 180, 180), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
      'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
@@ -54,8 +55,8 @@ VISUALIZER_CFG = {
 # single class instantiated, single config used
 FRAME_POST_PROCESSOR_CFG = {  # post process config
     # cloud point filter para
-    'FPP_global_xlim' : (-1.7, 1.6),  # the x-direction limit for merged cloud points from all radars, set as [a, b), from global view
-    'FPP_global_ylim' : (0, 2.7),
+    'FPP_global_xlim' : (-2, 2),  # the x-direction limit for merged cloud points from all radars, set as [a, b), from global view
+    'FPP_global_ylim' : (0, 4),
     'FPP_global_zlim' : (0, 2),
     'FPP_ES_threshold': {'range': None, 'speed_none_0_exception': True},  # the points in this energy strength range will be preserved, if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
 }
@@ -111,8 +112,8 @@ BGNOISE_FILTER_CFG = {  # Background noise filter config
 
     # BGN processing para
     'BGN_deque_length'       : 150,
-    'BGN_accept_ES_threshold': (None, 200),  # the noise with this ES range will be accepted when BGN update, it is for DBS noise
-    'BGN_filter_ES_threshold': (None, 200),  # the noise with this ES range will be filtered when BGN filter
+    'BGN_accept_ES_threshold': (None, 0),  # the noise with this ES range will be accepted when BGN update, it is for DBS noise
+    'BGN_filter_ES_threshold': (None, 0),  # the noise with this ES range will be filtered when BGN filter
     'BGN_DBS_window_step'    : 20,
     'BGN_DBS_eps'            : 0.02,
     'BGN_DBS_min_samples'    : 20,
