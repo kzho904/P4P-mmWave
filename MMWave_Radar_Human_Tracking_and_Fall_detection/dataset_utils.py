@@ -2,8 +2,10 @@ from glob import glob
 
 import numpy as np
 import tensorflow as tf
+import pandas as pd
 from sklearn.model_selection import train_test_split
-
+import os
+import pickle
 
 def tf_parse_filename(filename):
     """Take batch of filenames and create point cloud and label"""
@@ -81,3 +83,57 @@ def train_val_split(train_size=0.92):
         val.extend(cur_val)
 
     return train, val
+
+def df_combined(data):
+    df = pd.DataFrame(data)
+    ori = df['IWR1843_Ori'].tolist()
+    side = df['IWR1843_Side'].tolist()
+    combined = ori + side
+    df = pd.DataFrame({'IWR1843_Ori': combined})
+
+    return df
+
+def parse_dataset(num_points, DATA_DIR):
+    train_points = []
+    train_labels = []
+    test_points = []
+    test_labels = []
+    class_map = {}
+    folders = glob(os.path.join(DATA_DIR, "[!README]*"))
+
+    for i, folder in enumerate(folders):
+        print("processing class: {}".format(os.path.basename(folder)))
+        # store folder name with ID so we can retrieve later
+        class_map[i] = folder.split("/")[-1]
+        # gather all files
+        train_files = glob(os.path.join(folder, "train/*"))
+        test_files = glob(os.path.join(folder, "test/*"))
+
+        for f in train_files:
+            with open(f, 'rb') as file:
+                data = pickle.load(file)
+                # print(data)
+                # print("loaded: {}".format(f))
+                # print(num_points)
+                sampled_data = data.sample(num_points).to_numpy()
+                train_points.append(sampled_data)
+                train_labels.append(i)
+
+        for f in test_files:
+            with open(f, 'rb') as file:
+                data = pickle.load(file)
+                # print(data)
+                # print("loaded: {}".format(f))
+                # print(num_points)
+                sampled_data = data.sample(num_points).to_numpy()
+                test_points.append(sampled_data)
+                test_labels.append(i)
+                # print(test_labels)
+
+    return (
+        np.array(train_points),
+        np.array(test_points),
+        np.array(train_labels),
+        np.array(test_labels),
+        class_map,
+    )
