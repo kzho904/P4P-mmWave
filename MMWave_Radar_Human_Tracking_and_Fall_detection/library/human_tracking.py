@@ -5,6 +5,7 @@ from collections import deque
 from math import hypot
 
 import numpy as np
+import pickle
 
 from library.data_processor import DataProcessor
 from library.human_object import HumanObject
@@ -55,6 +56,9 @@ class HumanTracking(DataProcessor):
                 #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
                 print(poss_clus_list[c])
                 print(p)
+                # Save the point_taken_poss_matrix using pickle
+                with open('point_taken_poss_matrix.pkl', 'wb') as file:
+                    pickle.dump(poss_clus_list, file)
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
 
         # keep finding the global maximum value of the possibility matrix until no values above 0
