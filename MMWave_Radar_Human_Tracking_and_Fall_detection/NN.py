@@ -22,6 +22,12 @@ from cfg.config_maggs307 import *
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # 0 for GPU, -1 for CPU
 
+def augment(points, label):
+    # jitter points
+    points += tf.random.uniform(points.shape, -0.005, 0.005, dtype="float16")
+    # shuffle points
+    points = tf.random.shuffle(points)
+    return points, label
 
 def model_structure_5D(input_shape, output_shape):
     _model_input = Input(shape=input_shape)
