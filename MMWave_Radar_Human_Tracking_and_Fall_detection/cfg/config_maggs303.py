@@ -19,9 +19,9 @@ RADAR_CFG_LIST = [
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
-     'pos_offset'    : (-0.8, 0, 2),  # default pos_offset is (0, 0, 0)
+     'pos_offset'    : (-0.8, 0, 2.22),  # default pos_offset is (0, 0, 0)
      'facing_angle'  : {'angle': (-30, 180, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
-     'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
+     'ES_threshold'  : {'range': (0, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 
      {'name'          : 'IWR1843_Side',
@@ -31,9 +31,9 @@ RADAR_CFG_LIST = [
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
-     'pos_offset'    : (0.8, 4.81, 2.2),  # default pos_offset is (0, 0, 0)
+     'pos_offset'    : (0.8, 4.81, 2.22),  # default pos_offset is (0, 0, 0)
      'facing_angle'  : {'angle': (30, 180, 180), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
-     'ES_threshold'  : {'range': (200, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
+     'ES_threshold'  : {'range': (0, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
      },
 ]
 
@@ -71,9 +71,9 @@ DBSCAN_GENERATOR_CFG = {  # DBSCAN para config
         'DBS_cp_pos_xlim': None,  # the position limit in x-direction for central points of clusters
         'DBS_cp_pos_ylim': None,
         'DBS_cp_pos_zlim': (0, 1.8),
-        'DBS_size_xlim'  : (0.2, 1),  # the cluster size limit in x-direction
-        'DBS_size_ylim'  : (0.2, 1),
-        'DBS_size_zlim'  : (0.2, 2),
+        'DBS_size_xlim'  : (0.3, 1),  # the cluster size limit in x-direction
+        'DBS_size_ylim'  : (0.3, 1),
+        'DBS_size_zlim'  : (0.3, 2),
         'DBS_sort'       : None,  # if sort is required, set it to a number for acquiring this number of the largest cluster
     },
 
@@ -115,8 +115,8 @@ BGNOISE_FILTER_CFG = {  # Background noise filter config
     'BGN_accept_ES_threshold': (None, 0),  # the noise with this ES range will be accepted when BGN update, it is for DBS noise
     'BGN_filter_ES_threshold': (None, 0),  # the noise with this ES range will be filtered when BGN filter
     'BGN_DBS_window_step'    : 20,
-    'BGN_DBS_eps'            : 0.02,
-    'BGN_DBS_min_samples'    : 20,
+    'BGN_DBS_eps'            : 0,
+    'BGN_DBS_min_samples'    : 0,
     'BGN_cluster_tf'         : 0.15,  # the threshold factor of data number used to select cluster
     'BGN_cluster_xextension' : 0.05,
     'BGN_cluster_yextension' : 0.05,

@@ -158,8 +158,8 @@ class Visualizer:
                              })
 
         # apply global boundary filter
-        val_data_allradar = self.fpp.FPP_boundary_filter(val_data_allradar)
-        ES_noise_allradar = self.fpp.FPP_boundary_filter(ES_noise_allradar)
+        #val_data_allradar = self.fpp.FPP_boundary_filter(val_data_allradar)
+        #ES_noise_allradar = self.fpp.FPP_boundary_filter(ES_noise_allradar)
         # apply global energy strength filter
         val_data_allradar, global_ES_noise = self.fpp.FPP_ES_Speed_filter(val_data_allradar)
         # apply background noise filter
@@ -179,10 +179,10 @@ class Visualizer:
         # background noise filter
         if self.fpp.BGN_enable:
             # update the background noise
-            if len(vertices_list) > 0:
-                self.fpp.BGN_update(np.concatenate([ES_noise_allradar, global_ES_noise, DBS_noise]))
-            else:
-                self.fpp.BGN_update(np.concatenate([ES_noise_allradar, global_ES_noise]))
+            #if len(vertices_list) > 0:
+                #self.fpp.BGN_update(np.concatenate([ES_noise_allradar, global_ES_noise, DBS_noise]))
+            #else:
+                #self.fpp.BGN_update(np.concatenate([ES_noise_allradar, global_ES_noise]))
             # draw BGN area
             BGN_block_list = self.fpp.BGN_get_filter_area()
             for bgn in BGN_block_list:

@@ -134,7 +134,7 @@ if __name__ == '__main__':
     radar_rd_queue_list = []  # radar rawdata queue list
     proc_list = []
     for RADAR_CFG in RADAR_CFG_LIST:
-        radar_rd_queue = Manager().Queue()
+        radar_rd_queue = Manager().Queue() 
         kwargs_CFG = {'RADAR_CFG': RADAR_CFG, 'FRAME_EARLY_PROCESSOR_CFG': FRAME_EARLY_PROCESSOR_CFG}
         radar_proc = Process(target=radar_proc_method, args=(run_flag, radar_rd_queue), kwargs=kwargs_CFG)
         radar_rd_queue_list.append(radar_rd_queue)
