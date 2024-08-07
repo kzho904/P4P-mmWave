@@ -62,8 +62,8 @@ class HumanTracking(DataProcessor):
                 print("test point 2 ")
                 print(p)
                 # Save the point_taken_poss_matrix using pickle
-                #with open('point_taken_poss_matrix.pkl', 'wb') as file:
-                    #pickle.dump(poss_clus_list, file)
+                with open('point_taken_poss_matrix.pkl', 'wb') as file:
+                    pickle.dump(poss_clus_list, file)
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
 
         # keep finding the global maximum value of the possibility matrix until no values above 0
