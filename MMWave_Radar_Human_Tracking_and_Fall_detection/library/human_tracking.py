@@ -55,8 +55,10 @@ class HumanTracking(DataProcessor):
         for c in range(len(poss_clus_list)):  # for each cluster
             for p in range(len(self.TRK_people_list)):  # for each object bin
                 #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                print("test point 1 " )
+                print("test point 1 ")
                 print(poss_clus_list[c])
+                print(obj_cp_total[c])
+                print(obj_size_total[c])
                 print("test point 2 ")
                 print(p)
                 # Save the point_taken_poss_matrix using pickle
