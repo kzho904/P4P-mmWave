@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 1
+        self.currentSave = 287
         self.window = 0
         self.totalArray = []
         print("tracking people")
@@ -60,7 +60,7 @@ class HumanTracking(DataProcessor):
             for p in range(len(self.TRK_people_list)):  # for each object bin
                 #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
                 normalised_array = []
-                dir = "pointnet_data/standing/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+                dir = "pointnet_data/sitting/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
                 
                 if self.window == 20:
                     with open(dir, 'wb') as file:
