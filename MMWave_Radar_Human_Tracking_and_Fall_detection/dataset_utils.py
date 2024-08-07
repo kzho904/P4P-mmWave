@@ -111,35 +111,40 @@ def parse_dataset(num_points, DATA_DIR):
         train_files = glob(os.path.join(folder, "train/*"))
         test_files = glob(os.path.join(folder, "test/*"))
 
+        all_train_points=[]
         for f in train_files:
             with open(f, 'rb') as file:
                 data = pickle.load(file)
-                nested_array = data.values[0].tolist()
-                nested_array_np = np.array(nested_array, dtype=np.float16)
-                sampled_indices = np.random.choice(nested_array_np.shape[0], size=num_points, replace=False)
-                sampled_data = nested_array_np[sampled_indices]
+                for arr in data:
+                    all_train_points.append(arr)
+                
+                concatenated_train_points = np.concatenate(all_train_points, axis=0)
+                sampled_indices = np.random.choice(concatenated_train_points.shape[0], size=num_points, replace=False)
+                sampled_data = concatenated_train_points[sampled_indices].astype(np.float16)
+                train_points.append(sampled_data)
+                train_labels.append(i)
                 # print(data)
                 # print("loaded: {}".format(f))
                 # print(num_points)
                 # sampled_data = data.sample(num_points).to_numpy()
-                train_points.append(sampled_data)
-                train_labels.append(i)
-
+               
+        all_test_points = []
         for f in test_files:
             with open(f, 'rb') as file:
                 data = pickle.load(file)
-                nested_array = data.values[0].tolist()
-                nested_array_np = np.array(nested_array, dtype=np.float16)
-                sampled_indices = np.random.choice(nested_array_np.shape[0], size=num_points, replace=False)
-                sampled_data = nested_array_np[sampled_indices]
+                for arr in data:
+                    all_test_points.append(arr)
+                
+                concatenated_test_points = np.concatenate(all_test_points, axis=0)
+                sampled_indices = np.random.choice(concatenated_test_points.shape[0], size=num_points, replace=False)
+                sampled_data = concatenated_test_points[sampled_indices].astype(np.float16)
+                test_points.append(sampled_data)
+                test_labels.append(i)
                 # print(data)
                 # print("loaded: {}".format(f))
                 # print(num_points)
                 # sampled_data = data.sample(num_points).to_numpy()
-                test_points.append(sampled_data)
-                test_labels.append(i)
                 # print(test_labels)
-
     return (
         np.array(train_points),
         np.array(test_points),
