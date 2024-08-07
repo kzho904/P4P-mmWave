@@ -23,6 +23,8 @@ class HumanTracking(DataProcessor):
         # get TRK processing para
         self.TRK_people_list = []
         self.currentSave = 1
+        self.window = 0
+        self.totalArray = []
         print("tracking people")
         for i in range(TRK_CFG['TRK_obj_bin_number']):  # create objects based on the maximum number
             self.TRK_people_list.append(HumanObject(name=str(i), **kwargs_CFG))
@@ -50,20 +52,36 @@ class HumanTracking(DataProcessor):
             obj_cp_total = np.concatenate([obj_cp_total, obj_cp])
             obj_size_total = np.concatenate([obj_size_total, obj_size])
 
+
         # calculate possibility matrix for each cluster and each object bin
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)
         for c in range(len(poss_clus_list)):  # for each cluster
+            
             for p in range(len(self.TRK_people_list)):  # for each object bin
                 #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                print("test point 1 ")
-                print(poss_clus_list[c])
-                print(obj_cp_total[c])
-                print(obj_size_total[c])
-                print("test point 2 ")
-                print(p)
+                normalised_array = []
+                dir = "pointnet_data/standing/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+                
+                if self.window == 20:
+                    with open(dir, 'wb') as file:
+                        pickle.dump(poss_clus_list, file)
+                    self.window = 0
+                    self.currentSave += 1
+                    self.totalArray = []
+                else:
+                    normalised_array = normalizeArray(poss_clus_list[c])
+                    # print(normalised_array)
+                    self.totalArray.append(normalised_array)
+                    self.window += 1
+                # print("test point 1 ")
+                # print(poss_clus_list[c])
+                # print(obj_cp_total[c])
+                # print(obj_size_total[c])
+                # print("test point 2 ")
+                # print(p)
                 # Save the point_taken_poss_matrix using pickle
-                with open('point_taken_poss_matrix.pkl', 'wb') as file:
-                    pickle.dump(poss_clus_list, file)
+                
+                
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
 
         # keep finding the global maximum value of the possibility matrix until no values above 0
@@ -82,3 +100,18 @@ class HumanTracking(DataProcessor):
                 if dis_diff < self.TRK_redundant_clus_remove_cp_dis:
                     point_taken_poss_matrix[i, :] = 0
             point_taken_poss_matrix[:, p] = 0
+
+def normalizeArray(array):
+    xyz = array[:,:3]
+    rest = array[:,3:]
+
+    min_vals = xyz.min(axis=0)
+    max_vals = xyz.max(axis=0)
+    normalized_xyz = (xyz - min_vals) / (max_vals - min_vals)
+
+    normalized_data = np.hstack((normalized_xyz, rest))
+
+    return normalized_data.tolist()
+
+
+
