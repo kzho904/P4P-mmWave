@@ -119,7 +119,7 @@ def parse_dataset(num_points, DATA_DIR):
                     all_train_points.append(arr)
                 
                 concatenated_train_points = np.concatenate(all_train_points, axis=0)
-                sampled_indices = np.random.choice(concatenated_train_points.shape[0], size=num_points, replace=False)
+                sampled_indices = np.random.choice(concatenated_train_points.shape[0], size=num_points, replace=True)
                 sampled_data = concatenated_train_points[sampled_indices].astype(np.float16)
                 train_points.append(sampled_data)
                 train_labels.append(i)
@@ -136,7 +136,7 @@ def parse_dataset(num_points, DATA_DIR):
                     all_test_points.append(arr)
                 
                 concatenated_test_points = np.concatenate(all_test_points, axis=0)
-                sampled_indices = np.random.choice(concatenated_test_points.shape[0], size=num_points, replace=False)
+                sampled_indices = np.random.choice(concatenated_test_points.shape[0], size=num_points, replace=True)
                 sampled_data = concatenated_test_points[sampled_indices].astype(np.float16)
                 test_points.append(sampled_data)
                 test_labels.append(i)
