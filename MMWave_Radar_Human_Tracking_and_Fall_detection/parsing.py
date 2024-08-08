@@ -8,6 +8,7 @@ import tensorflow as tf
 DATA_DIR = '/path/to/your/data'
 
 def parse_dataset(num_points=2048, frames_per_file=10):
+    np.random.seed(42)
     train_points = []
     train_labels = []
     test_points = []

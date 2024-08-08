@@ -25,6 +25,7 @@ class HumanTracking(DataProcessor):
         self.currentSave = 287
         self.window = 0
         self.totalArray = []
+        self.prev_clus = [] ##############
         print("tracking people")
         for i in range(TRK_CFG['TRK_obj_bin_number']):  # create objects based on the maximum number
             self.TRK_people_list.append(HumanObject(name=str(i), **kwargs_CFG))
@@ -55,31 +56,32 @@ class HumanTracking(DataProcessor):
 
         # calculate possibility matrix for each cluster and each object bin
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)
+        prev_clus = poss_clus_list ############
         for c in range(len(poss_clus_list)):  # for each cluster
-            
             for p in range(len(self.TRK_people_list)):  # for each object bin
-                #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                normalised_array = []
-                dir = "pointnet_data/sitting/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
-                
-                if self.window == 20:
-                    with open(dir, 'wb') as file:
-                        pickle.dump(poss_clus_list, file)
-                    self.window = 0
-                    self.currentSave += 1
-                    self.totalArray = []
-                else:
-                    normalised_array = normalizeArray(poss_clus_list[c])
-                    # print(normalised_array)
-                    self.totalArray.append(normalised_array)
-                    self.window += 1
-                # print("test point 1 ")
-                # print(poss_clus_list[c])
-                # print(obj_cp_total[c])
-                # print(obj_size_total[c])
-                # print("test point 2 ")
-                # print(p)
-                # Save the point_taken_poss_matrix using pickle
+                if prev_clus != poss_clus_list: #############
+                    #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
+                    normalised_array = []
+                    dir = "pointnet_data/sitting/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+    
+                    if self.window == 20:
+                        with open(dir, 'wb') as file:
+                            pickle.dump(poss_clus_list, file)
+                        self.window = 0
+                        self.currentSave += 1
+                        self.totalArray = []
+                    else:
+                        normalised_array = normalizeArray(poss_clus_list[c])
+                        # print(normalised_array)
+                        self.totalArray.append(normalised_array)
+                        self.window += 1
+                    # print("test point 1 ")
+                    # print(poss_clus_list[c])
+                    # print(obj_cp_total[c])
+                    # print(obj_size_total[c])
+                    # print("test point 2 ")
+                    # print(p)
+                    # Save the point_taken_poss_matrix using pickle
                 
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
