@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 287
+        self.currentSave = 446
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -56,25 +56,25 @@ class HumanTracking(DataProcessor):
 
         # calculate possibility matrix for each cluster and each object bin
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)
-        prev_clus = poss_clus_list ############
         for c in range(len(poss_clus_list)):  # for each cluster
             for p in range(len(self.TRK_people_list)):  # for each object bin
-                if prev_clus != poss_clus_list: #############
+                # if prev_clus != poss_clus_list: #############
+                prev_clus = poss_clus_list ############
                     #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                    normalised_array = []
-                    dir = "pointnet_data/sitting/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
-    
-                    if self.window == 20:
-                        with open(dir, 'wb') as file:
-                            pickle.dump(poss_clus_list, file)
-                        self.window = 0
-                        self.currentSave += 1
-                        self.totalArray = []
-                    else:
-                        normalised_array = normalizeArray(poss_clus_list[c])
-                        # print(normalised_array)
-                        self.totalArray.append(normalised_array)
-                        self.window += 1
+                normalised_array = []
+                dir = "pointnet_data/standing/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+
+                if self.window == 20:
+                    with open(dir, 'wb') as file:
+                        pickle.dump(poss_clus_list, file)
+                    self.window = 0
+                    self.currentSave += 1
+                    self.totalArray = []
+                else:
+                    normalised_array = normalizeArray(poss_clus_list[c])
+                    # print(normalised_array)
+                    self.totalArray.append(normalised_array)
+                    self.window += 1
                     # print("test point 1 ")
                     # print(poss_clus_list[c])
                     # print(obj_cp_total[c])
