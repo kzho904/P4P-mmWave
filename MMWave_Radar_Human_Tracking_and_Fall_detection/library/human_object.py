@@ -107,6 +107,8 @@ class HumanObject:
         self.obj_cp_deque.append(obj_cp)
         self.obj_size_deque.append(obj_size)
         self._update_height(obj_cp, obj_size)
+        ## todo
+        # Change Function here to get the status of the object through the models instead of the function below
         self.obj_status_deque.append(self._get_status(obj_cp, obj_size))
         self.obj_speed_deque.append(self._get_speed(obj))
         self.obj_timestamp_deque.append(time.time())
