@@ -50,7 +50,7 @@ RADAR_CFG_LIST = [
 
 # multiple class instantiated, single config used
 FRAME_EARLY_PROCESSOR_CFG = {  # early process config
-    'FEP_frame_deque_length': 10,  # the number of frame stacked
+    'FEP_frame_deque_length': 20,  # the number of frame stacked
 }
 
 # single class instantiated, single config used

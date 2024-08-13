@@ -96,8 +96,8 @@ class HumanTracking(DataProcessor):
             # print(poss_clus_list[c])
            
             if self.window == 10 and self.currentSave != 100:
-                with open(dir, 'wb') as file:
-                    pickle.dump(self.totalArray, file)
+                # with open(dir, 'wb') as file:
+                #     pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
                 self.totalArray = []

@@ -7,7 +7,7 @@ from collections import deque
 import numpy as np
 from matplotlib import pyplot as plt
 from numpy import sin, cos
-
+import pickle
 from library.data_processor import DataProcessor
 
 
@@ -28,13 +28,16 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.zlim = RDR_CFG['zlim']
         self.pos_offset = RDR_CFG['pos_offset']
         self.facing_angle = RDR_CFG['facing_angle']
-
+        self.currentSave = 0
+        self.window = 0
+        self.totalArray = []
         """
         inherit father class __init__ para
         """
         super().__init__()
 
     def FEP_accumulate_update(self, frame):  # ndarray(points, channels=5) of 1 frame
+       
         # append frames
         self.FEP_frame_group_deque.append(frame)
         frame_group = np.concatenate(self.FEP_frame_group_deque).astype(np.float16)  # concatenate the deque list
@@ -45,9 +48,25 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
+        # normalised_array = normalizeArray(frame_group)
+        
+        # if self.window == 10 and self.currentSave != 100:
+        #     dir = "data/bg_noise/bg_noise" + str(self.currentSave) + ".pkl"
+        #     with open(dir, 'wb') as file:
+        #                 pickle.dump(normalised_array, file)
+        #     self.window = 0
+        #     self.currentSave +=1
+        #     self.totalArray = []
+        #     normalised_array = []
+        # if self.currentSave != 100:
+        #     self.totalArray.append(normalised_array)
+        #     self.window +=1
+        # else:
+        #      print("enough samples")
 
         return frame_group  # ndarray(points, channels) of a dozen of frames
-
+    
+    
     def FEP_boundary_filter(self, data_points):
         """
         :param data_points: (ndarray) data_numbers(n) * channels(c>3)
@@ -126,6 +145,20 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         data_points = np.concatenate([data_points, np.ones([data_points.shape[0], 1], dtype=data_points.dtype)], axis=1).T
         data_points_transformed = np.dot(T, data_points)
         return data_points_transformed.T[:, 0:3]
+
+def normalizeArray(array):
+        xyz = array[:,:3]
+        rest = array[:,3:]
+
+        min_vals = xyz.min(axis=0)
+        max_vals = xyz.max(axis=0)
+        normalized_xyz = (xyz - min_vals) / (max_vals - min_vals)
+
+        normalized_data = np.hstack((normalized_xyz, rest))
+
+        return normalized_data.tolist()
+
+
 
 
 if __name__ == '__main__':
