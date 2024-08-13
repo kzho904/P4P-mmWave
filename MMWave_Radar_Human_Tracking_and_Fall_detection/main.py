@@ -93,7 +93,6 @@ def vidcompress_proc_method(_run_flag, _shared_param_dict, **_kwargs_CFG):
 
 def test_proc_method(_run_flag, _shared_param_dict):
     _run_flag = _run_flag
-    _manual_save_flag = _shared_param_dict['mansave_flag']
     _auto_save_flag = _shared_param_dict['autosave_flag']
 
     def gui_button_style():
@@ -103,6 +102,7 @@ def test_proc_method(_run_flag, _shared_param_dict):
     def shot():
         if not _auto_save_flag.value:
            _auto_save_flag.value = True
+           print("shot")
         else:
             _auto_save_flag.value = False
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     run_flag = Manager().Value('b', True)  # this flag control whole system running
     # generate save flag dict
     shared_param_dict = {'mansave_flag'       : Manager().Value('c', None),  # set as None, 'image' or 'video', only triggered at the end of recording
-                         'autosave_flag'      : Manager().Value('b', False),  # set as False, True or False, constantly high from the beginning to the end of recording
+                         'autosave_flag'      : Manager().Value('b', True),  # set as False, True or False, constantly high from the beginning to the end of recording
                          'compress_video_file': Manager().Value('c', None),  # the record video file waiting to be compressed
                          'email_image'        : Manager().Value('f', None),  # for image info from save_center to email_notifier module
                          }

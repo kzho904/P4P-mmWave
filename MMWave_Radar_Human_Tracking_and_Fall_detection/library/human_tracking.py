@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 438
+        self.currentSave = 0
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -55,28 +55,27 @@ class HumanTracking(DataProcessor):
 
 
         # calculate possibility matrix for each cluster and each object bin
-        dir = "2_class_data/standing/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)  
         for c in range(len(poss_clus_list)):  # for each cluster
             for p in range(len(self.TRK_people_list)):  # for each object bin
-                if not np.array_equal(self.prev_clus, poss_clus_list):
-                    self.prev_clus = poss_clus_list ############
+                # if not np.array_equal(self.prev_clus, poss_clus_list):
+                    # self.prev_clus = poss_clus_list ############
                         #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                    normalised_array = []
-        
+                    # normalised_array = []
 
-                    if self.window == 20:
-                        with open(dir, 'wb') as file:
-                            pickle.dump(poss_clus_list, file)
-                        self.window = 0
-                        self.currentSave += 1
-                        self.totalArray = []
-                    else:
-                        normalised_array = normalizeArray(poss_clus_list[c])
-                        # print(normalised_array)
-                        self.totalArray.append(normalised_array)
-                        self.window += 1
-                        # print("test point 1 ")
+                    # if self.window == 20:
+                    #     with open(dir, 'wb') as file:
+                    #         pickle.dump(self.totalArray, file)
+                    #     self.window = 0
+                    #     self.currentSave += 1
+                    #     self.totalArray = []
+                    # else:
+                    #     normalised_array = normalizeArray(poss_clus_list[c])
+                    #     # print(normalised_array)
+                    #     self.totalArray.append(normalised_array)
+                    #     self.window += 1
+                    #     # print("test point 1 ")
                         # print(poss_clus_list[c])
                         # print(obj_cp_total[c])
                         # print(obj_size_total[c])
@@ -86,15 +85,33 @@ class HumanTracking(DataProcessor):
                     
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
-
+        
+        dir = "2_class_data/walking/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
+            
             max_index = divmod(np.argmax(point_taken_poss_matrix), point_taken_poss_matrix.shape[1])
             c = max_index[0]
             p = max_index[1]
+            # print(poss_clus_list[c])
+           
+            if self.window == 10 and self.currentSave != 100:
+                with open(dir, 'wb') as file:
+                    pickle.dump(self.totalArray, file)
+                self.window = 0
+                self.currentSave += 1
+                self.totalArray = []
+                normalised_array = []
+            elif self.currentSave != 100:
+                normalised_array = normalizeArray(poss_clus_list[c])
+                # print(normalised_array)
+                self.totalArray.append(normalised_array)
+                self.window += 1
+            else:
+                print("enough samples")
             # append the central point and size to the corresponding object
             self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c])
-
+              
             # by setting the poss_matrix raw & column to 0 to remove redundant clusters closed to the updated one including itself, for multiple obj bin purpose
             obj_cp_used = obj_cp_total[c]
             for i in range(len(obj_cp_total)):
