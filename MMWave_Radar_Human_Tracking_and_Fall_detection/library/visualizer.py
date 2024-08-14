@@ -17,7 +17,7 @@ from library.frame_post_processor import FramePProcessor
 
 RP_colormap = ['C5', 'C7', 'C8']  # the colormap for radar raw points
 ES_colormap = ['lavender', 'thistle', 'violet', 'darkorchid', 'indigo']  # the colormap for radar energy strength
-OS_colormap = ['grey', 'green', 'gold', 'red']  # the colormap for object status
+OS_colormap = ['grey', 'green', 'gold', 'red' , 'blue']  # the colormap for object status
 
 
 class Visualizer:

@@ -109,6 +109,7 @@ class HumanObject:
         self._update_height(obj_cp, obj_size)
         ## todo
         # Change Function here to get the status of the object through the models instead of the function below
+        # chang the function to get the status of the object through the models pass in just nomalized data points instead
         self.obj_status_deque.append(self._get_status(obj_cp, obj_size))
         self.obj_speed_deque.append(self._get_speed(obj))
         self.obj_timestamp_deque.append(time.time())
@@ -166,7 +167,7 @@ class HumanObject:
 
     def _get_status(self, obj_cp, obj_size):
         """
-        :return: (int) 0-unknown, 1-standing, 2-sitting, 3-lying
+        :return: (int) 1-walking, 2-jumping, 3-running, 4-falling
         """
         # current_height = obj_cp[2] + obj_size[2] / 2
         # current_volume = np.prod(obj_size)
