@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 0
+        self.currentSave = 100
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -86,7 +86,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "3_class_data/speedwalking/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -95,17 +95,21 @@ class HumanTracking(DataProcessor):
             p = max_index[1]
             # print(poss_clus_list[c])
            
-            if self.window == 10 and self.currentSave != 100:
+            if self.window == 10 and self.currentSave != 200:
                 with open(dir, 'wb') as file:
                     pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
                 self.totalArray = []
-                normalised_array = []
-            elif self.currentSave != 100:
-                normalised_array = normalizeArray(poss_clus_list[c])
+                # normalised_array = []
+                standardizedArray = []
+            elif self.currentSave != 200:
+                # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
-                self.totalArray.append(normalised_array)
+                # self.totalArray.append(normalised_array)
+                standardizedArray = standardizeArray(poss_clus_list[c])
+                # print(standardizedArray)
+                self.totalArray.append(standardizedArray)
                 self.window += 1
             else:
                 print("enough samples")
@@ -132,6 +136,24 @@ def normalizeArray(array):
     normalized_data = np.hstack((normalized_xyz, rest))
 
     return normalized_data.tolist()
+
+def standardizeArray(array):
+    xyz = array[:,:3]
+    rest = array[:,3:]
+
+    # Calculate the mean and standard deviation for the xyz coordinates
+    xyz_mean = np.mean(xyz, axis=0)
+    xyz_std = np.std(xyz, axis=0)
+    
+    # Standardizing the xyz coordinates
+    standardized_xyz = (xyz - xyz_mean) / xyz_std
+    
+    # Recombining the standardized xyz with the rest of the array
+    standardized_array = np.concatenate([standardized_xyz, rest], axis=1)
+    
+    return standardized_array
+
+    
 
 
 
