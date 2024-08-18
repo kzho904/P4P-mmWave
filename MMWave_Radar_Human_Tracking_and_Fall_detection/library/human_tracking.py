@@ -26,6 +26,7 @@ class HumanTracking(DataProcessor):
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
+        self.send = False
         print("tracking people")
         for i in range(TRK_CFG['TRK_obj_bin_number']):  # create objects based on the maximum number
             self.TRK_people_list.append(HumanObject(name=str(i), **kwargs_CFG))
@@ -86,7 +87,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        #dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -95,26 +96,26 @@ class HumanTracking(DataProcessor):
             p = max_index[1]
             # print(poss_clus_list[c])
            
-            if self.window == 10 and self.currentSave != 200:
-                with open(dir, 'wb') as file:
-                    pickle.dump(self.totalArray, file)
+            if self.window == 10:  #and self.currentSave != 200:
+                #with open(dir, 'wb') as file:
+                    #pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
-                self.totalArray = []
-                # normalised_array = []
-                standardizedArray = []
-            elif self.currentSave != 200:
+                self.send = True
+            else:
                 # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
                 # self.totalArray.append(normalised_array)
                 standardizedArray = standardizeArray(poss_clus_list[c])
-                # print(standardizedArray)
+                print(standardizedArray)
                 self.totalArray.append(standardizedArray)
                 self.window += 1
-            else:
-                print("enough samples")
+                
             # append the central point and size to the corresponding object
-            self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c])
+            self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c], self.totalArray, self.send)
+            if self.send == True:
+                self.totalArray = []
+                standardizedArray = []
               
             # by setting the poss_matrix raw & column to 0 to remove redundant clusters closed to the updated one including itself, for multiple obj bin purpose
             obj_cp_used = obj_cp_total[c]
