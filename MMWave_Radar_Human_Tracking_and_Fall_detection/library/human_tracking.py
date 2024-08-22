@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 100
+        self.currentSave = 0
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -86,7 +86,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "data/test/point_taken_poss_matrix_raw" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -95,21 +95,22 @@ class HumanTracking(DataProcessor):
             p = max_index[1]
             # print(poss_clus_list[c])
            
-            if self.window == 10 and self.currentSave != 200:
-                with open(dir, 'wb') as file:
-                    pickle.dump(self.totalArray, file)
+            if self.window == 10 and self.currentSave != 10:
+                # with open(dir, 'wb') as file:
+                #     pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
+                print(self.totalArray)
                 self.totalArray = []
                 # normalised_array = []
-                standardizedArray = []
+                # standardizedArray = []
             elif self.currentSave != 200:
                 # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
                 # self.totalArray.append(normalised_array)
-                standardizedArray = standardizeArray(poss_clus_list[c])
+                # standardizedArray = standardizeArray(poss_clus_list[c])
                 # print(standardizedArray)
-                self.totalArray.append(standardizedArray)
+                self.totalArray.append(poss_clus_list[c])
                 self.window += 1
             else:
                 print("enough samples")
