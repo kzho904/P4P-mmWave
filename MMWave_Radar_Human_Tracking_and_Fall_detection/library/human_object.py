@@ -49,7 +49,7 @@ class HumanObject:
         self.get_fuzzy_pos_No = OBJ_CFG['get_fuzzy_pos_No']
         self.get_fuzzy_status_No = OBJ_CFG['get_fuzzy_status_No']
         
-        with open('CNN_model.p', 'rb') as file:
+        with open('cnn.p', 'rb') as file:
             self.model = pickle.load(file)
 
         """
