@@ -110,7 +110,7 @@ class HumanTracking(DataProcessor):
                 # self.totalArray.append(normalised_array)
                 # standardizedArray = standardizeArray(poss_clus_list[c])
                 # print(standardizedArray)
-                self.totalArray = np.vstack((self.totalArray, standardizedArray))
+                self.totalArray = np.vstack((self.totalArray, poss_clus_list[c]))
                 self.window += 1
             else:
                 print("enough samples")
