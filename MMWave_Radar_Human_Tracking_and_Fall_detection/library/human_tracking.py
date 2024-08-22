@@ -22,9 +22,9 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 100
+        self.currentSave = 150
         self.window = 0
-        self.totalArray = []
+        self.totalArray = np.empty((0, 5))
         self.prev_clus = [] ##############
         print("tracking people")
         for i in range(TRK_CFG['TRK_obj_bin_number']):  # create objects based on the maximum number
@@ -86,7 +86,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "sd_indvidual_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -96,20 +96,24 @@ class HumanTracking(DataProcessor):
             # print(poss_clus_list[c])
            
             if self.window == 10 and self.currentSave != 200:
+                self.totalArray = standardizeArray(self.totalArray)
                 with open(dir, 'wb') as file:
                     pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
-                self.totalArray = []
+                self.totalArray = np.empty((0, 5))
                 # normalised_array = []
                 standardizedArray = []
             elif self.currentSave != 200:
                 # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
                 # self.totalArray.append(normalised_array)
-                standardizedArray = standardizeArray(poss_clus_list[c])
+                #standardizedArray = standardizeArray(poss_clus_list[c])
                 # print(standardizedArray)
-                self.totalArray = np.vstack((self.totalArray, standardizedArray))
+                if self.totalArray is None:
+                    self.totalArray = standardizedArray
+                else:
+                    self.totalArray = np.vstack((self.totalArray, poss_clus_list[c]))
                 self.window += 1
             else:
                 print("enough samples")

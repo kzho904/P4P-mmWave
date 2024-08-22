@@ -7,7 +7,7 @@ CAMERA_FPS = 30  # 30 frames per second, lower under worse light condition
 MANSAVE_ENABLE = False  # this controls the flag from the source
 MANSAVE_PERIOD = 1  # second, the time period saved for manual save
 # auto save
-AUTOSAVE_ENABLE = True  # auto save function requires tracking system
+AUTOSAVE_ENABLE = False  # auto save function requires tracking system
 AUTOSAVE_PERIOD = 1 # second, the max time period saved for auto save (radar)
 
 # multiple class instantiated, multiple config used
