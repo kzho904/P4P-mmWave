@@ -50,19 +50,19 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         # normalised_array = normalizeArray(frame_group)
         
-        # if self.window == 10 and self.currentSave != 100:
-        #     dir = "data/bg_noise/bg_noise" + str(self.currentSave) + ".pkl"
-        #     with open(dir, 'wb') as file:
-        #                 pickle.dump(normalised_array, file)
-        #     self.window = 0
-        #     self.currentSave +=1
-        #     self.totalArray = []
-        #     normalised_array = []
-        # if self.currentSave != 100:
-        #     self.totalArray.append(normalised_array)
-        #     self.window +=1
-        # else:
-        #      print("enough samples")
+        if self.window == 10 and self.currentSave != 10:
+            dir = "data/test/entire_field_raw" + str(self.currentSave) + ".pkl"
+            with open(dir, 'wb') as file:
+                        pickle.dump(self.totalArray, file)
+            self.window = 0
+            self.currentSave +=1
+            self.totalArray = []
+            # normalised_array = []
+        if self.currentSave != 10:
+            self.totalArray.append(frame_group)
+            self.window +=1
+        else:
+             print("ENOUGH SAMPLES")
 
         return frame_group  # ndarray(points, channels) of a dozen of frames
     

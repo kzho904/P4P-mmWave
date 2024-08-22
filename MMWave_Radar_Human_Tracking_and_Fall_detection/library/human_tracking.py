@@ -103,7 +103,7 @@ class HumanTracking(DataProcessor):
                 self.currentSave += 1
                 self.totalArray = np.empty((0, 5))
                 # normalised_array = []
-                standardizedArray = []
+                # standardizedArray = []
             elif self.currentSave != 200:
                 # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
