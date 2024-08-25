@@ -28,7 +28,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.zlim = RDR_CFG['zlim']
         self.pos_offset = RDR_CFG['pos_offset']
         self.facing_angle = RDR_CFG['facing_angle']
-        self.currentSave = 0
+        self.currentSave = 300
         self.window = 0
         self.totalArray = []
         """
@@ -50,15 +50,15 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         # normalised_array = normalizeArray(frame_group)
         
-        if self.window == 10 and self.currentSave != 10:
-            dir = "data/test/entire_field_raw" + str(self.currentSave) + ".pkl"
-            with open(dir, 'wb') as file:
-                        pickle.dump(self.totalArray, file)
+        if self.window == 10 and self.currentSave != 1000:
+            # dir = "data/test/entire_field_raw_jumping" + str(self.currentSave) + ".pkl"
+            # with open(dir, 'wb') as file:
+            #             pickle.dump(self.totalArray, file)
             self.window = 0
             self.currentSave +=1
             self.totalArray = []
             # normalised_array = []
-        if self.currentSave != 10:
+        if self.currentSave != 1000:
             self.totalArray.append(frame_group)
             self.window +=1
         else:

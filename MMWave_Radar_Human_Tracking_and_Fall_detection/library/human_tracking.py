@@ -86,7 +86,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "sd_indvidual_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "sd_indvidual_3_class_data/jumping/katie_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -105,13 +105,14 @@ class HumanTracking(DataProcessor):
                 # normalised_array = []
                 # standardizedArray = []
             elif self.currentSave != 200:
+                print(self.currentSave)
                 # normalised_array = normalizeArray(poss_clus_list[c])
                 # print(normalised_array)
                 # self.totalArray.append(normalised_array)
                 #standardizedArray = standardizeArray(poss_clus_list[c])
                 # print(standardizedArray)
                 if self.totalArray is None:
-                    self.totalArray = standardizedArray
+                    self.totalArray = poss_clus_list[c]
                 else:
                     self.totalArray = np.vstack((self.totalArray, poss_clus_list[c]))
                 self.window += 1
