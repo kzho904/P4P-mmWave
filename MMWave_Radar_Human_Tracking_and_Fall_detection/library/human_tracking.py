@@ -86,7 +86,7 @@ class HumanTracking(DataProcessor):
                 
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "sd_indvidual_3_class_data/jumping/katie_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "raw_3_class_data/jumping/yang_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -96,9 +96,9 @@ class HumanTracking(DataProcessor):
             # print(poss_clus_list[c])
            
             if self.window == 10 and self.currentSave != 200:
-                self.totalArray = standardizeArray(self.totalArray)
-                with open(dir, 'wb') as file:
-                    pickle.dump(self.totalArray, file)
+                #self.totalArray = standardizeArray(self.totalArray)
+                # with open(dir, 'wb') as file:
+                #     pickle.dump(self.totalArray, file)
                 self.window = 0
                 self.currentSave += 1
                 self.totalArray = np.empty((0, 5))
