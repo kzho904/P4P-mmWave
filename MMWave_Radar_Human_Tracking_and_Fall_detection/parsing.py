@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 
 # Define the data directory
-DATA_DIR = '/path/to/your/data'
+DATA_DIR = '/raw_3_class_data'
 
 def parse_dataset(num_points=2048, frames_per_file=10):
     np.random.seed(42)
