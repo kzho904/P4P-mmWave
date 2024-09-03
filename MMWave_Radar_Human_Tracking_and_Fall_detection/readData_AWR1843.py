@@ -1,9 +1,6 @@
 import serial
 import time
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from pyqtgraph import Qt, QtGui, QtCore, QtWidgets
-import pyqtgraph as pg
 import numpy as np
 
 # Change the configuration file name
@@ -30,8 +27,8 @@ def serialConfig(configFileName):
     #Dataport = serial.Serial('/dev/ttyACM1', 921600)
     
     # Windows
-    CLIport = serial.Serial('/dev/cu.usbmodemR21010501', 115200)
-    Dataport = serial.Serial('/dev/cu.usbmodemR21010504', 921600)
+    CLIport = serial.Serial('COM12', 115200)
+    Dataport = serial.Serial('COM11', 921600)
 
     # Read the configuration file and send it to the board
     config = [line.rstrip('\r\n') for line in open(configFileName)]
@@ -262,8 +259,8 @@ def update():
         x = -detObj["x"]
         y = detObj["y"]
         
-        s.setData(x,y)
-        QtGui.QApplication.processEvents()
+        # s.setData(x,y)
+        # QtGui.QApplication.processEvents()
     
     return dataOk
 
@@ -276,20 +273,20 @@ print("ports configured")
 # Get the configuration parameters from the configuration file
 configParameters = parseConfigFile(configFileName)
 print("configParameters recieved")
-# START QtAPPfor the plot
-app = QApplication(sys.argv)
+# # START QtAPPfor the plot
+# app = QApplication(sys.argv)
 
-# Set the plot 
-pg.setConfigOption('background','w')
-win = pg.GraphicsLayoutWidget(title="2D scatter plot")
-p = win.addPlot()
-p.setXRange(-0.5,0.5)
-p.setYRange(0,1.5)
-p.setLabel('left',text = 'Y position (m)')
-p.setLabel('bottom', text= 'X position (m)')
-s = p.plot([],[],pen=None,symbol='o')
-win.show()
-print("plot setup")
+# # Set the plot 
+# pg.setConfigOption('background','w')
+# win = pg.GraphicsLayoutWidget(title="2D scatter plot")
+# p = win.addPlot()
+# p.setXRange(-0.5,0.5)
+# p.setYRange(0,1.5)
+# p.setLabel('left',text = 'Y position (m)')
+# p.setLabel('bottom', text= 'X position (m)')
+# s = p.plot([],[],pen=None,symbol='o')
+# win.show()
+# print("plot setup")
    
 # Main loop 
 detObj = {}  

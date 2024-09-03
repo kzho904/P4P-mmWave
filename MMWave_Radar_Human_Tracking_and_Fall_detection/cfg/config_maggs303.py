@@ -12,17 +12,17 @@ AUTOSAVE_PERIOD = 1 # second, the max time period saved for auto save (radar)
 
 # multiple class instantiated, multiple config used
 RADAR_CFG_LIST = [
-    {'name'          : 'IWR1843_Ori',
-     'cfg_port_name' : config.cfg0_port_name,
-     'data_port_name': config.data0_port_name,
-     'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
-     'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
-     'ylim'          : (0.25, 6),
-     'zlim'          : None,
-     'pos_offset'    : (-0.8, 0, 2.22),  # default pos_offset is (0, 0, 0)
-     'facing_angle'  : {'angle': (-30, 180, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
-     'ES_threshold'  : {'range': (0, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
-     },
+    # {'name'          : 'IWR1843_Ori',
+    #  'cfg_port_name' : config.cfg0_port_name,
+    #  'data_port_name': config.data0_port_name,
+    #  'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+    #  'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
+    #  'ylim'          : (0.25, 6),
+    #  'zlim'          : None,
+    #  'pos_offset'    : (-0.8, 0, 2.22),  # default pos_offset is (0, 0, 0)
+    #  'facing_angle'  : {'angle': (-30, 180, 0), 'sequence': None},  # right-hand global coord-sys, (x, y, z): [-180, 180] positive counted anti-clockwise when facing from axis end towards origin, default rotation sequence: zyx
+    #  'ES_threshold'  : {'range': (0, None), 'speed_none_0_exception': True},  # if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
+    #  },
 
      {'name'          : 'IWR1843_Side',
      'cfg_port_name' : config.cfg1_port_name,
