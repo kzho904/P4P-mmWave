@@ -15,7 +15,7 @@ RADAR_CFG_LIST = [
     {'name'          : 'IWR1843_Ori',
      'cfg_port_name' : config.cfg0_port_name,
      'data_port_name': config.data0_port_name,
-     'cfg_file_name' : 'cfg\IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+     'cfg_file_name' : '/Users/katiezhou/P4P-mmWave/MMWave_Radar_Human_Tracking_and_Fall_detection/cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
@@ -27,7 +27,7 @@ RADAR_CFG_LIST = [
      {'name'          : 'IWR1843_Side',
      'cfg_port_name' : config.cfg1_port_name,
      'data_port_name': config.data1_port_name,
-     'cfg_file_name' : 'cfg\IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+     'cfg_file_name' : '/Users/katiezhou/P4P-mmWave/MMWave_Radar_Human_Tracking_and_Fall_detection/cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,

@@ -28,7 +28,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.zlim = RDR_CFG['zlim']
         self.pos_offset = RDR_CFG['pos_offset']
         self.facing_angle = RDR_CFG['facing_angle']
-        self.currentSave = 90
+        self.currentSave = 0
         self.window = 0
         self.totalArray = []
         self.data_dir = os.path.join(os.getcwd(), 'data') 
@@ -49,13 +49,16 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
-        # normalised_array = normalizeArray(frame_group)
+        normalised_array = normalizeArray(frame_group)
         
         ###########SAVING SAMPLES################
         # if self.window == 10 and self.currentSave != 100:
-        #     file_path = self.data_dir + '/3_09_2024_lab_pc_raw_data/jumping/katie_walking' + str(self.currentSave) + '.pkl'
-        #     with open(file_path, 'wb') as file:
-        #         pickle.dump(self.totalArray, file)
+        #     file_path = self.data_dir + '/03_09_2024_katie_pc_norm_bg_noise/bg_noise' + str(self.currentSave) + '.pkl'
+        #     if os.path.exists(self.data_dir):
+        #         with open(file_path, 'wb') as file:
+        #             pickle.dump(self.totalArray, file)
+        #     else:
+        #         print(f"path does not exist {file_path}")
         #     self.window = 0
         #     self.currentSave +=1
         #     print("index is :", self.currentSave)
@@ -63,7 +66,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         #     self.totalArray = []
         #     # normalised_array = []
         # if self.currentSave != 100:
-        #     self.totalArray.append(frame_group)
+        #     self.totalArray.append(normalised_array)
         #     self.window +=1
         # else:
         #      print("ENOUGH SAMPLES")
