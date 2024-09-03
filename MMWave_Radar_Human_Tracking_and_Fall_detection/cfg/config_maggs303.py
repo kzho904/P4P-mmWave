@@ -15,7 +15,7 @@ RADAR_CFG_LIST = [
     {'name'          : 'IWR1843_Ori',
      'cfg_port_name' : config.cfg0_port_name,
      'data_port_name': config.data0_port_name,
-     'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+     'cfg_file_name' : 'cfg\IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
@@ -27,7 +27,7 @@ RADAR_CFG_LIST = [
      {'name'          : 'IWR1843_Side',
      'cfg_port_name' : config.cfg1_port_name,
      'data_port_name': config.data1_port_name,
-     'cfg_file_name' : './cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+     'cfg_file_name' : 'cfg\IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
@@ -64,7 +64,7 @@ FRAME_POST_PROCESSOR_CFG = {  # post process config
 # single class instantiated, single config used
 DBSCAN_GENERATOR_CFG = {  # DBSCAN para config
     'Default'             : {
-        'DBS_eps'        : 0.3,  # maximum distance, larger means the further points can be clustered, smaller means the points need to be closer
+        'DBS_eps'        : 0.5,  # maximum distance, larger means the further points can be clustered, smaller means the points need to be closer
         'DBS_min_samples': 10,  # minimum samples, larger means more points are needed to form a cluster, 1-each point can be treated as a cluster, no noise
 
         # DBSCAN filter para

@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from numpy import sin, cos
 import pickle
 from library.data_processor import DataProcessor
-
+import os
 
 class FrameEProcessor(DataProcessor):  # early processing for frame of each radar before merging
     def __init__(self, **kwargs_CFG):
@@ -28,9 +28,10 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.zlim = RDR_CFG['zlim']
         self.pos_offset = RDR_CFG['pos_offset']
         self.facing_angle = RDR_CFG['facing_angle']
-        self.currentSave = 300
+        self.currentSave = 90
         self.window = 0
         self.totalArray = []
+        self.data_dir = os.path.join(os.getcwd(), 'data') 
         """
         inherit father class __init__ para
         """
@@ -50,19 +51,22 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         # normalised_array = normalizeArray(frame_group)
         
-        if self.window == 10 and self.currentSave != 1000:
-            # dir = "data/test/entire_field_raw_jumping" + str(self.currentSave) + ".pkl"
-            # with open(dir, 'wb') as file:
-            #             pickle.dump(self.totalArray, file)
-            self.window = 0
-            self.currentSave +=1
-            self.totalArray = []
-            # normalised_array = []
-        if self.currentSave != 1000:
-            self.totalArray.append(frame_group)
-            self.window +=1
-        else:
-             print("ENOUGH SAMPLES")
+        ###########SAVING SAMPLES################
+        # if self.window == 10 and self.currentSave != 100:
+        #     file_path = self.data_dir + '/3_09_2024_lab_pc_raw_data/jumping/katie_walking' + str(self.currentSave) + '.pkl'
+        #     with open(file_path, 'wb') as file:
+        #         pickle.dump(self.totalArray, file)
+        #     self.window = 0
+        #     self.currentSave +=1
+        #     print("index is :", self.currentSave)
+        #     # print(self.totalArray)
+        #     self.totalArray = []
+        #     # normalised_array = []
+        # if self.currentSave != 100:
+        #     self.totalArray.append(frame_group)
+        #     self.window +=1
+        # else:
+        #      print("ENOUGH SAMPLES")
 
         return frame_group  # ndarray(points, channels) of a dozen of frames
     
