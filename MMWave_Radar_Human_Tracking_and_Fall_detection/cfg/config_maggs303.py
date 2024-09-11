@@ -27,7 +27,7 @@ RADAR_CFG_LIST = [
      {'name'          : 'IWR1843_Side',
      'cfg_port_name' : config.cfg1_port_name,
      'data_port_name': config.data1_port_name,
-     'cfg_file_name' : '/Users/katiezhou/P4P-mmWave/MMWave_Radar_Human_Tracking_and_Fall_detection/cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
+     'cfg_file_name' : '/Users//P4P-mmWave/MMWave_Radar_Human_Tracking_and_Fall_detection/cfg/IWR1843_3D_20fps_15db.cfg',  # always use 3D data as input
      'xlim'          : None,  # the x-direction limit for cloud points from this single radar, set as [a, b), from radar view
      'ylim'          : (0.25, 6),
      'zlim'          : None,
@@ -62,49 +62,50 @@ FRAME_POST_PROCESSOR_CFG = {  # post process config
 }
 
 # single class instantiated, single config used
-DBSCAN_GENERATOR_CFG = {  # DBSCAN para config
+DBSCAN_GENERATOR_CFG = {
     'Default'             : {
-        'DBS_eps'        : 0.5,  # maximum distance, larger means the further points can be clustered, smaller means the points need to be closer
-        'DBS_min_samples': 10,  # minimum samples, larger means more points are needed to form a cluster, 1-each point can be treated as a cluster, no noise
+        'DBS_eps'        : 0.5,
+        'DBS_min_samples': 10,
 
-        # DBSCAN filter para
-        'DBS_cp_pos_xlim': None,  # the position limit in x-direction for central points of clusters
+        # DBSCAN filter parameters
+        'DBS_cp_pos_xlim': None,
         'DBS_cp_pos_ylim': None,
         'DBS_cp_pos_zlim': (0, 1.8),
-        'DBS_size_xlim'  : (0.3, 1),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.3, 1),
         'DBS_size_ylim'  : (0.3, 1),
         'DBS_size_zlim'  : (0.3, 2),
-        'DBS_sort'       : None,  # if sort is required, set it to a number for acquiring this number of the largest cluster
+        'DBS_sort'       : None,
     },
 
-    # DBS_dynamic_para, it allows run multiple DBSCAN with diff para for each data frame
-    'Dynamic_ES_0_above'  : {  # for data points with energy above 0
-        'DBS_eps'        : 0.2,
-        'DBS_min_samples': 15,
+    # More lenient settings for low energy levels
+    'Dynamic_ES_0_above'  : {  # more lenient for data points with energy above 0
+        'DBS_eps'        : 0.4,  # increased from 0.2
+        'DBS_min_samples': 5,    # reduced from 15
     },
     'Dynamic_ES_100_above': {
-        'DBS_eps'        : 0.3,
-        'DBS_min_samples': 12,
+        'DBS_eps'        : 0.5,  # increased from 0.3
+        'DBS_min_samples': 4,    # reduced from 12
     },
     'Dynamic_ES_200_above': {
-        'DBS_eps'        : 0.4,
-        'DBS_min_samples': 8,
+        'DBS_eps'        : 0.6,  # increased slightly from 0.4
+        'DBS_min_samples': 6,
     },
     'Dynamic_ES_300_above': {
         'DBS_eps'        : 0.6,
         'DBS_min_samples': 3,
-        'DBS_size_xlim'  : (0.1, 0.8),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.1, 0.8),
         'DBS_size_ylim'  : (0.1, 0.8),
         'DBS_size_zlim'  : (0.1, 2),
     },
     'Dynamic_ES_400_above': {
         'DBS_eps'        : 1,
         'DBS_min_samples': 2,
-        'DBS_size_xlim'  : (0.1, 0.8),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.1, 0.8),
         'DBS_size_ylim'  : (0.1, 0.8),
         'DBS_size_zlim'  : (0.1, 2),
     },
 }
+
 
 # single class instantiated, single config used
 BGNOISE_FILTER_CFG = {  # Background noise filter config
