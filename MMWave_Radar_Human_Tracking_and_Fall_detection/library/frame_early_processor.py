@@ -28,14 +28,27 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.zlim = RDR_CFG['zlim']
         self.pos_offset = RDR_CFG['pos_offset']
         self.facing_angle = RDR_CFG['facing_angle']
+        self.bg_noise = pickle.load(FEP_CFG['FEP_background_noise_file'])
+        self.bg_rm_threshold = FEP_CFG['FEP_background_removal_threshold']
         self.currentSave = 0
         self.window = 0
         self.totalArray = []
-        self.data_dir = os.path.join(os.getcwd(), 'data') 
+        self.data_dir = os.path.join(os.getcwd(), 'data')
         """
         inherit father class __init__ para
         """
         super().__init__()
+    
+    def FEP_background_removal(self, frame):
+        filtered_data = []
+        for array in frame:
+            for point in array:
+                distances = np.linalg.norm(self.bg_noise[:, :3]- point[:3], axis =1)
+                if np.min(distances) > self.bg_rm_threshold:
+                    filtered_data.append(point)
+        return filtered_data
+
+
 
     def FEP_accumulate_update(self, frame):  # ndarray(points, channels=5) of 1 frame
        
@@ -49,7 +62,9 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
-        normalised_array = normalizeArray(frame_group)
+        
+        
+        # normalised_array = normalizeArray(frame_group)
         
         ###########SAVING SAMPLES################
         # if self.window == 10 and self.currentSave != 100:
