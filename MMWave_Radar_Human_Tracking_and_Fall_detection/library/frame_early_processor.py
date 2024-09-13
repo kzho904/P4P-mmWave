@@ -41,14 +41,21 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         """
         super().__init__()
     
-    def FEP_background_removal(self, frame):
-        filtered_data = []
-        for array in frame:
-            for point in array:
-                distances = np.linalg.norm(self.bg_noise[:, :3]- point[:3], axis =1)
+    def FEP_background_removal(self, frame_group):
+        filtered_frames = []
+        # Iterate over each frame in the frame group
+        for frame in frame_group:
+            filtered_data = []
+            # Process each point in the frame
+            for point in frame:
+                distances = np.linalg.norm(self.bg_noise[:, :3] - point[:3], axis=1)
+                # Append point if it passes the background removal threshold
                 if np.min(distances) > self.bg_rm_threshold:
                     filtered_data.append(point)
-        return filtered_data
+            # Append the filtered frame to the list
+            filtered_frames.append(np.array(filtered_data))
+        return filtered_frames
+
 
 
 
