@@ -197,7 +197,6 @@ class HumanObject:
         #     if self.sitting_lying_threshold <= obj_cp[2] < self.standing_sitting_threshold or self.obj_height_dict['height'] * 0.25 <= current_height < self.obj_height_dict['height'] * 0.8:
         #         status = 2  # sitting
         # elif obj_cp[2] < self.sitting_lying_threshold or current_height < self.obj_height_dict['height'] * 0.25:
-        status = self.model.predict(obj_array)
         
         #     status = 3  # lying
         status = self.model.predict(array)
