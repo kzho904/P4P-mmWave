@@ -50,7 +50,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
             # Find the minimum distance for each point
             min_distances = np.min(distances, axis=1)
             # Filter out points based on the threshold
-            filtered_data = frame[min_distances > self.bg_rm_threshold]
+            filtered_data = frame_group[min_distances > self.bg_rm_threshold]
             # Append the filtered frame to the list
             filtered_frames.append(filtered_data)
         

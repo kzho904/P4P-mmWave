@@ -83,12 +83,24 @@ class RadarReader:
                         detectedSNR_array, \
                         detectedNoise_array = parser_one_mmw_demo_output_packet(data, len(data), print_enable=0)
                     # put data into queue, convert list to nparray, and transpose from (channels, points) to (points, channels)
+                    frame = None
                     try:
                         frame = self.fep.FEP_accumulate_update(np.array((detectedX_array, detectedY_array, detectedZ_array, detectedV_array, detectedSNR_array)).transpose())
-                    except:
-                        # print('Data parser BROKEN!!!!!!!!!!!!!!!')
-                        pass
-                    self.radar_rd_queue.put(frame)
+                    except Exception as e:
+                        # You can log the error message for debugging
+                        print(f"Error in frame accumulation: {e}")
+
+                    if frame is not None:
+                        self.radar_rd_queue.put(frame)
+                    else:
+                        print("Frame accumulation failed, skipping this frame.")
+
+                    # try:
+                    #     frame = self.fep.FEP_accumulate_update(np.array((detectedX_array, detectedY_array, detectedZ_array, detectedV_array, detectedSNR_array)).transpose())
+                    # except:
+                    #     # print('Data parser BROKEN!!!!!!!!!!!!!!!')
+                    #     pass
+                    # self.radar_rd_queue.put(frame)
                     # self._log(str(len(data)) + '\t' + str(data))
                     # winsound.Beep(500, 200)
 
