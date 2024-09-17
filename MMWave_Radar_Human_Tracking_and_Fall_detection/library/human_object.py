@@ -4,7 +4,7 @@ Human object, abbr. OBJ
 import time
 from collections import deque
 from math import hypot
-
+from pointnet_lstm import load_model
 import numpy as np
 import pickle
 
@@ -51,6 +51,9 @@ class HumanObject:
         
         with open('cnn.p', 'rb') as file:
             self.model = pickle.load(file)
+
+        # for pointnet lstm
+        self.model = load_model(OBJ_CFG['weight_path'])
 
         """
         self content
@@ -169,19 +172,22 @@ class HumanObject:
                     obj_status = 0
         return obj_cp, obj_status
 
-    def _get_status(self, obj_array):
+    def _get_status(self, standard_array):
         """
         :return: (int) 1-walking, 2-jumping, 3-running, 4-falling
         """
+        array = np.array(standard_array).reshape(300,5)
+        print(array.shape)
+        print(array)
         # current_height = obj_cp[2] + obj_size[2] / 2
         # current_volume = np.prod(obj_size)
-
+        # print("DEBUG DEBUG")
         # status_possibility_list = []
         # for s in ['standing', 'sitting', 'lying']:
         #     pos_possibility, shape_possibility = self._get_self_possibility(obj_cp, obj_size, self.expect_pos[s], self.expect_shape[s])
         #     status_possibility_list.append(sum(np.array([pos_possibility, shape_possibility]) * np.array(self.sub_possibility_proportion)[2:4]))
         # status = status_possibility_list.index(max(status_possibility_list)) + 1
-
+        # print("DEBUG DEBUG DEBUG DEUBG DEBUG")
         # # for big cluster cube
         # if current_volume > 0.25 and obj_size[2] > 1:
         #     if obj_cp[2] >= self.standing_sitting_threshold and current_height >= self.obj_height_dict['height'] * 0.8:
@@ -194,6 +200,9 @@ class HumanObject:
         status = self.model.predict(obj_array)
         
         #     status = 3  # lying
+        status = self.model.predict(array)
+        print(f"pred is :{status}")
+        ###########################################################
         return status
 
     def _get_speed(self, data_points):

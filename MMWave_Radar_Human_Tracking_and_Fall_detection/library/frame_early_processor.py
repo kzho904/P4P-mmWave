@@ -44,7 +44,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
 
         # apply boundary filter
         frame_group = self.FEP_boundary_filter(frame_group)
-
+        # frame_group = self.FEP_background_removal(frame_group)
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
