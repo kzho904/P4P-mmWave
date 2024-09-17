@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 114
+        self.currentSave = 290
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -61,7 +61,7 @@ class HumanTracking(DataProcessor):
             for p in range(len(self.TRK_people_list)):  # for each object bin
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "cluster_data/padded/jumping/yang_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "cluster_data/padded/walking/katie_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -81,7 +81,7 @@ class HumanTracking(DataProcessor):
                 poss_clus_list[c] = np.vstack((poss_clus_list[c], padding))
             #print(poss_clus_list[c])
            #############SAVING SAMPLES######################
-            if self.window == 10 and self.currentSave != 200:
+            if self.window == 10 and self.currentSave != 314:
                 print(self.currentSave)
                 #self.totalArray = standardizeArray(self.totalArray)
                 with open(dir, 'wb') as file:
@@ -91,7 +91,7 @@ class HumanTracking(DataProcessor):
                 self.totalArray = []
                 #normalised_array = []
                 standardizedArray = []
-            elif self.currentSave != 200:
+            elif self.currentSave != 314:
                 #normalised_array = normalizeArray(poss_clus_list[c])
                 #print(normalised_array)
                 #self.totalArray.append(normalised_array)
