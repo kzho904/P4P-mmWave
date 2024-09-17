@@ -43,18 +43,30 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
     
     def FEP_background_removal(self, frame_group):
         filtered_frames = []
-        # Iterate over each frame in the frame group
+        num_points_removed = 0
+        # # Iterate over each frame in the frame group
         for frame in frame_group:
-            # Create a mask for points that pass the background removal threshold
-            distances = np.linalg.norm(self.bg_noise[:, :3] - frame[:, :3][:, np.newaxis], axis=2)
-            # Find the minimum distance for each point
-            min_distances = np.min(distances, axis=1)
-            # Filter out points based on the threshold
-            filtered_data = frame_group[min_distances > self.bg_rm_threshold]
-            # Append the filtered frame to the list
-            filtered_frames.append(filtered_data)
-        
-        return filtered_frames
+            # print("debug 1")
+            distances = np.linalg.norm(self.bg_noise[:, :3]- frame[:3], axis =1)
+            # print("debug 2")
+            if np.min(distances) > self.bg_rm_threshold:
+                # print("debug 3")
+                filtered_frames.append(frame)
+            else:
+                # print("debug 4")
+                num_points_removed +=1
+            # # Create a mask for points that pass the background removal threshold
+            # distances = np.linalg.norm(self.bg_noise[:, :3] - frame[:, :3][:, np.newaxis], axis=2)
+            # # Find the minimum distance for each point
+            # min_distances = np.min(distances, axis=1)
+            # # Filter out points based on the threshold
+            # filtered_data = frame_group[min_distances > self.bg_rm_threshold]
+            # # Append the filtered frame to the list
+            # filtered_frames.append(filtered_data)
+        # print(f"num points removed: {num_points_removed}")
+        # print(f"frame_group {frame_group.shape}")
+        # print(f"filtered_frames : {np.array(filtered_frames).shape}")
+        return np.array(filtered_frames)
 
 
 
@@ -67,7 +79,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
 
         # apply boundary filter
         frame_group = self.FEP_boundary_filter(frame_group)
-
+        frame_group = self.FEP_background_removal(frame_group)
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
