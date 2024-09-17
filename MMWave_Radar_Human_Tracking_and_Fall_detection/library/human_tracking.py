@@ -81,29 +81,29 @@ class HumanTracking(DataProcessor):
                 poss_clus_list[c] = np.vstack((poss_clus_list[c], padding))
             #print(poss_clus_list[c])
            #############SAVING SAMPLES######################
-            if self.window == 10 and self.currentSave != 314:
-                print(self.currentSave)
-                #self.totalArray = standardizeArray(self.totalArray)
-                with open(dir, 'wb') as file:
-                    pickle.dump(self.totalArray, file)
-                self.window = 0
-                self.currentSave += 1
-                self.totalArray = []
-                #normalised_array = []
-                standardizedArray = []
-            elif self.currentSave != 314:
-                #normalised_array = normalizeArray(poss_clus_list[c])
-                #print(normalised_array)
-                #self.totalArray.append(normalised_array)
-                #standardizedArray = standardizeArray(poss_clus_list[c])
-                #print(standardizedArray)
-                if self.totalArray is None:
-                    self.totalArray = poss_clus_list[c]
-                else:
-                    self.totalArray.append(poss_clus_list[c])
-                self.window += 1
-            else:
-                print("enough samples")
+            # if self.window == 10 and self.currentSave != 314:
+            #     print(self.currentSave)
+            #     #self.totalArray = standardizeArray(self.totalArray)
+            #     with open(dir, 'wb') as file:
+            #         pickle.dump(self.totalArray, file)
+            #     self.window = 0
+            #     self.currentSave += 1
+            #     self.totalArray = []
+            #     #normalised_array = []
+            #     standardizedArray = []
+            # elif self.currentSave != 314:
+            #     #normalised_array = normalizeArray(poss_clus_list[c])
+            #     #print(normalised_array)
+            #     #self.totalArray.append(normalised_array)
+            #     #standardizedArray = standardizeArray(poss_clus_list[c])
+            #     #print(standardizedArray)
+            #     if self.totalArray is None:
+            #         self.totalArray = poss_clus_list[c]
+            #     else:
+            #         self.totalArray.append(poss_clus_list[c])
+            #     self.window += 1
+            # else:
+            #     print("enough samples")
             #append the central point and size to the corresponding object
             self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c])
               

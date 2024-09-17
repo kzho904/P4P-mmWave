@@ -40,9 +40,11 @@ RADAR_CFG_LIST = [
 # multiple class instantiated, single config used
 FRAME_EARLY_PROCESSOR_CFG = {  # early process config
     'FEP_frame_deque_length': 10,  # the number of frame stacked
-    'FEP_background_noise_file': './data/03_09_2024_katie_pc_bg_noise/all_samples_merged.pkl',
+    'FEP_background_noise_file': './data/03_09_2024_katie_pc_bg_noise/unique_bg_points.pkl',
     'FEP_background_removal_threshold': 0.1
 }
+
+
 
 # single class instantiated, single config used
 VISUALIZER_CFG = {
@@ -178,6 +180,12 @@ HUMAN_OBJECT_CFG = {  # human object config for each object bin
     # get last update 2-5 info to show the current position and status
     'get_fuzzy_pos_No'          : 20,
     'get_fuzzy_status_No'       : 40,
+
+    # pointnet lstm
+    'weights_path'              : './model/checkpoints/17_09_2024_pointlstm_padded_bg_rm/best.weights.h5',
+    'input_shape'               : (300, 5),
+    'num_features'              : 5,
+    'num_classes'               : 2
 }
 
 # single class instantiated, single config used

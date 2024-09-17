@@ -4,9 +4,9 @@ Human object, abbr. OBJ
 import time
 from collections import deque
 from math import hypot
-
+from pointnet_lstm import load_model
 import numpy as np
-
+import pickle
 
 class HumanObject:
     def __init__(self, name, **kwargs_CFG):
@@ -48,6 +48,12 @@ class HumanObject:
         # get mean position and other info from last serval data
         self.get_fuzzy_pos_No = OBJ_CFG['get_fuzzy_pos_No']
         self.get_fuzzy_status_No = OBJ_CFG['get_fuzzy_status_No']
+
+        # load the model
+        self.pointnet_lstm = load_model(OBJ_CFG['model_weight'], OBJ_CFG['input_shape'], OBJ_CFG['num_features'], OBJ_CFG['num_classes'])
+        
+        # with open('cnn.p', 'rb') as file:
+        #     self.model = pickle.load(file)
 
         """
         self content
@@ -97,7 +103,7 @@ class HumanObject:
         point_taken_possibility = sum(np.array([dis_possibility, size_possibility, pos_possibility, shape_possibility]) * np.array(self.sub_possibility_proportion))
         return point_taken_possibility
 
-    def update_info(self, obj, obj_cp, obj_size):
+    def update_info(self, obj, obj_cp, obj_size, standard_array, status):
         """
         :param obj: (ndarray) data_numbers(n) * channels(5), cluster data points
         :param obj_cp: (ndarray) channels(3), xyz, central point of cluster
@@ -110,7 +116,8 @@ class HumanObject:
         ## todo
         # Change Function here to get the status of the object through the models instead of the function below
         # chang the function to get the status of the object through the models pass in just nomalized data points instead
-        self.obj_status_deque.append(self._get_status(obj_cp, obj_size))
+        if status == True:
+            self.obj_status_deque.append(self._get_status(standard_array))
         self.obj_speed_deque.append(self._get_speed(obj))
         self.obj_timestamp_deque.append(time.time())
 
@@ -165,18 +172,18 @@ class HumanObject:
                     obj_status = 0
         return obj_cp, obj_status
 
-    def _get_status(self, obj_cp, obj_size):
+    def _get_status(self, obj_array):
         """
         :return: (int) 1-walking, 2-jumping, 3-running, 4-falling
         """
         # current_height = obj_cp[2] + obj_size[2] / 2
         # current_volume = np.prod(obj_size)
 
-        status_possibility_list = []
-        for s in ['standing', 'sitting', 'lying']:
-            pos_possibility, shape_possibility = self._get_self_possibility(obj_cp, obj_size, self.expect_pos[s], self.expect_shape[s])
-            status_possibility_list.append(sum(np.array([pos_possibility, shape_possibility]) * np.array(self.sub_possibility_proportion)[2:4]))
-        status = status_possibility_list.index(max(status_possibility_list)) + 1
+        # status_possibility_list = []
+        # for s in ['standing', 'sitting', 'lying']:
+        #     pos_possibility, shape_possibility = self._get_self_possibility(obj_cp, obj_size, self.expect_pos[s], self.expect_shape[s])
+        #     status_possibility_list.append(sum(np.array([pos_possibility, shape_possibility]) * np.array(self.sub_possibility_proportion)[2:4]))
+        # status = status_possibility_list.index(max(status_possibility_list)) + 1
 
         # # for big cluster cube
         # if current_volume > 0.25 and obj_size[2] > 1:
@@ -187,6 +194,8 @@ class HumanObject:
         #     if self.sitting_lying_threshold <= obj_cp[2] < self.standing_sitting_threshold or self.obj_height_dict['height'] * 0.25 <= current_height < self.obj_height_dict['height'] * 0.8:
         #         status = 2  # sitting
         # elif obj_cp[2] < self.sitting_lying_threshold or current_height < self.obj_height_dict['height'] * 0.25:
+        status = self.pointnet_lstm.predict(obj_array)
+        
         #     status = 3  # lying
         return status
 
