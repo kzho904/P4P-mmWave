@@ -147,7 +147,7 @@ class SaveCenter:
 
             """auto save"""
             # auto save, constantly high from the beginning to the end of recording
-            if self.autosave_flag.value:
+            if self.autosave_flag.value and 1 == 0:
                 # for email notification
                 # if packet['source'] == 'camera':
                 #     self.email_image.value = packet['data']
@@ -183,7 +183,7 @@ class SaveCenter:
                     #     self.videowriter.write(packet['data'])
             else:
                 # for radar
-                self._log("autosave is disabled")
+                #self._log("autosave is disabled")
                 if len(self.autosave_rdr_data_deque) > 0:
                     # set start and end save time for asynchronous modules
                     asave_end_time = time.time() - self.autosave_end_remove_period

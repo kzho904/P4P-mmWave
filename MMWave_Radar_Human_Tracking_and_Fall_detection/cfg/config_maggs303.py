@@ -7,7 +7,7 @@ CAMERA_FPS = 30  # 30 frames per second, lower under worse light condition
 MANSAVE_ENABLE = False  # this controls the flag from the source
 MANSAVE_PERIOD = 1  # second, the time period saved for manual save
 # auto save
-AUTOSAVE_ENABLE = True  # auto save function requires tracking system
+AUTOSAVE_ENABLE = False  # auto save function requires tracking system
 AUTOSAVE_PERIOD = 1 # second, the max time period saved for auto save (radar)
 
 # multiple class instantiated, multiple config used
@@ -40,6 +40,8 @@ RADAR_CFG_LIST = [
 # multiple class instantiated, single config used
 FRAME_EARLY_PROCESSOR_CFG = {  # early process config
     'FEP_frame_deque_length': 10,  # the number of frame stacked
+    'FEP_background_noise_file': './data/03_09_2024_katie_pc_bg_noise/all_samples_merged.pkl',
+    'FEP_background_removal_threshold': 0.1
 }
 
 # single class instantiated, single config used
@@ -62,49 +64,50 @@ FRAME_POST_PROCESSOR_CFG = {  # post process config
 }
 
 # single class instantiated, single config used
-DBSCAN_GENERATOR_CFG = {  # DBSCAN para config
+DBSCAN_GENERATOR_CFG = {
     'Default'             : {
-        'DBS_eps'        : 0.3,  # maximum distance, larger means the further points can be clustered, smaller means the points need to be closer
-        'DBS_min_samples': 10,  # minimum samples, larger means more points are needed to form a cluster, 1-each point can be treated as a cluster, no noise
+        'DBS_eps'        : 0.5,
+        'DBS_min_samples': 10,
 
-        # DBSCAN filter para
-        'DBS_cp_pos_xlim': None,  # the position limit in x-direction for central points of clusters
+        # DBSCAN filter parameters
+        'DBS_cp_pos_xlim': None,
         'DBS_cp_pos_ylim': None,
         'DBS_cp_pos_zlim': (0, 1.8),
-        'DBS_size_xlim'  : (0.3, 1),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.3, 1),
         'DBS_size_ylim'  : (0.3, 1),
         'DBS_size_zlim'  : (0.3, 2),
-        'DBS_sort'       : None,  # if sort is required, set it to a number for acquiring this number of the largest cluster
+        'DBS_sort'       : None,
     },
 
-    # DBS_dynamic_para, it allows run multiple DBSCAN with diff para for each data frame
-    'Dynamic_ES_0_above'  : {  # for data points with energy above 0
-        'DBS_eps'        : 0.2,
-        'DBS_min_samples': 15,
+    # More lenient settings for low energy levels
+    'Dynamic_ES_0_above'  : {  # more lenient for data points with energy above 0
+        'DBS_eps'        : 0.4,  # increased from 0.2
+        'DBS_min_samples': 5,    # reduced from 15
     },
     'Dynamic_ES_100_above': {
-        'DBS_eps'        : 0.3,
-        'DBS_min_samples': 12,
+        'DBS_eps'        : 0.5,  # increased from 0.3
+        'DBS_min_samples': 4,    # reduced from 12
     },
     'Dynamic_ES_200_above': {
-        'DBS_eps'        : 0.4,
-        'DBS_min_samples': 8,
+        'DBS_eps'        : 0.6,  # increased slightly from 0.4
+        'DBS_min_samples': 6,
     },
     'Dynamic_ES_300_above': {
         'DBS_eps'        : 0.6,
         'DBS_min_samples': 3,
-        'DBS_size_xlim'  : (0.1, 0.8),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.1, 0.8),
         'DBS_size_ylim'  : (0.1, 0.8),
         'DBS_size_zlim'  : (0.1, 2),
     },
     'Dynamic_ES_400_above': {
         'DBS_eps'        : 1,
         'DBS_min_samples': 2,
-        'DBS_size_xlim'  : (0.1, 0.8),  # the cluster size limit in x-direction
+        'DBS_size_xlim'  : (0.1, 0.8),
         'DBS_size_ylim'  : (0.1, 0.8),
         'DBS_size_zlim'  : (0.1, 2),
     },
 }
+
 
 # single class instantiated, single config used
 BGNOISE_FILTER_CFG = {  # Background noise filter config

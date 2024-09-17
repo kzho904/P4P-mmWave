@@ -39,8 +39,8 @@ class SyncMonitor:
         while self.run_flag.value:
             # monitor radar queues
             rd_qsize_np = np.array([self.radar_rd_queue_list[i].qsize() for i in range(len(self.radar_rd_queue_list))])
-            if sum(rd_qsize_np) > self.rd_qsize_warning:
-                self._log(f'Radar queue size: {list(rd_qsize_np)}, pls save data until no traffic!')
+            #if sum(rd_qsize_np) > self.rd_qsize_warning:
+                #self._log(f'Radar queue size: {list(rd_qsize_np)}, pls save data until no traffic!')
             # sync the queue list when there are multiple queue
             if len(rd_qsize_np) > 1:
                 diff_np = rd_qsize_np - min(rd_qsize_np)

@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 100
+        self.currentSave = 290
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -60,48 +60,21 @@ class HumanTracking(DataProcessor):
         point_taken_poss_matrix = np.zeros([len(poss_clus_list), len(self.TRK_people_list)], dtype=np.float16)  
         for c in range(len(poss_clus_list)):  # for each cluster
             for p in range(len(self.TRK_people_list)):  # for each object bin
-                # if not np.array_equal(self.prev_clus, poss_clus_list):
-                    # self.prev_clus = poss_clus_list ############
-                        #print(poss_clus_list[c] + " " + obj_cp_total[c] + " " + obj_size_total[c] + " " + p)
-                    # normalised_array = []
-
-                    # if self.window == 20:
-                    #     with open(dir, 'wb') as file:
-                    #         pickle.dump(self.totalArray, file)
-                    #     self.window = 0
-                    #     self.currentSave += 1
-                    #     self.totalArray = []
-                    # else:
-                    #     normalised_array = normalizeArray(poss_clus_list[c])
-                    #     # print(normalised_array)
-                    #     self.totalArray.append(normalised_array)
-                    #     self.window += 1
-                    #     # print("test point 1 ")
-                        # print(poss_clus_list[c])
-                        # print(obj_cp_total[c])
-                        # print(obj_size_total[c])
-                        # print("test point 2 ")
-                        # print(p)
-                        # Save the point_taken_poss_matrix using pickle
-                    
-                
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        #dir = "sd_3_class_data/jumping/point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "cluster_data/padded/walking/katie_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
             max_index = divmod(np.argmax(point_taken_poss_matrix), point_taken_poss_matrix.shape[1])
             c = max_index[0]
             p = max_index[1]
-            # print(poss_clus_list[c])
-           
-            if self.window == 10:  #and self.currentSave != 200:
-                #with open(dir, 'wb') as file:
-                    #pickle.dump(self.totalArray, file)
-                self.window = 0
-                self.currentSave += 1
-                self.send = True
+            num_rows, num_cols = poss_clus_list[c].shape
+    
+            # Truncate or pad the data to have exactly max_rows
+            if num_rows > 30:
+                # Truncate to max_rows
+                poss_clus_list[c] = poss_clus_list[c][:30]
             else:
                 # Create padding with zeros
                 padding = np.zeros((30 - num_rows, num_cols))
