@@ -55,6 +55,8 @@ class HumanObject:
         # for pointnet lstm
         self.model = load_model(OBJ_CFG['weight_path'])
 
+        self.status = False
+
         """
         self content
         """
@@ -118,6 +120,7 @@ class HumanObject:
         # chang the function to get the status of the object through the models pass in just nomalized data points instead
         if status == True:
             self.obj_status_deque.append(self._get_status(standard_array))
+            self.status = True
         self.obj_speed_deque.append(self._get_speed(obj))
         self.obj_timestamp_deque.append(time.time())
 
@@ -138,12 +141,15 @@ class HumanObject:
         obj_cp = np.ndarray([0, 3], dtype=np.float16)
         obj_status = -1
 
+        
         # if there are previous points
         if len(self.obj_cp_deque) > 0:
             # check if long time no update
             if self._check_timeout(self.obj_delete_timeout):
+                print("timeout reached")
                 self.obj_cp_deque.clear()
                 self.obj_size_deque.clear()
+                
                 self.obj_status_deque = deque(np.ones(self.obj_status_deque.maxlen, dtype=int), self.obj_status_deque.maxlen)  # set as standing as default
                 self.obj_speed_deque.clear()
                 self.obj_timestamp_deque.clear()
@@ -159,17 +165,22 @@ class HumanObject:
                     obj_cp = self.obj_cp_deque[-1][np.newaxis, :]
 
                 # get obj status
+
+                ## PROBLEM HEREEEEEEEE
                 if self.get_fuzzy_status_No:  # get comprehensive info based on previous value sequence
+                    print("test point 1")
                     # sort the status labels, high to low
                     unique, counts = np.unique(list(self.obj_status_deque)[-self.get_fuzzy_status_No:], return_counts=True)
                     unique_sorted = [i[0] for i in sorted(tuple(zip(unique, counts)), key=lambda item: item[1], reverse=True)]
                     obj_status = unique_sorted[0]  # use the label with maximum number
                 else:  # get latest info
+                    print("test point 0")
                     obj_status = self.obj_status_deque[-1]
 
                 # check if temporarily lose the target
                 if self._check_timeout(self.inactive_timeout):
                     obj_status = 0
+        #print(self.obj_status_deque)
         return obj_cp, obj_status
 
     def _get_status(self, standard_array):
@@ -298,6 +309,7 @@ class HumanObject:
         :param time_threshold: (float/int) unit is second
         :return: (boolean) is timeout or not
         """
+
         if (time.time() - self.obj_timestamp_deque[-1]) >= time_threshold:
             timeout = True
         else:
