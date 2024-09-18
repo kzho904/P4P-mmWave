@@ -49,8 +49,8 @@ class HumanObject:
         self.get_fuzzy_pos_No = OBJ_CFG['get_fuzzy_pos_No']
         self.get_fuzzy_status_No = OBJ_CFG['get_fuzzy_status_No']
         
-        with open('cnn.p', 'rb') as file:
-            self.model = pickle.load(file)
+        # with open('cnn.p', 'rb') as file:
+        #     self.model = pickle.load(file)
 
         # for pointnet lstm
         self.model = load_model(OBJ_CFG['weight_path'])
@@ -176,9 +176,9 @@ class HumanObject:
         """
         :return: (int) 1-walking, 2-jumping, 3-running, 4-falling
         """
-        array = np.array(standard_array).reshape(300,5)
-        print(array.shape)
-        print(array)
+        array = np.array(standard_array).reshape(1,300,5)
+        # print(array.shape)
+        # print(array)
         # current_height = obj_cp[2] + obj_size[2] / 2
         # current_volume = np.prod(obj_size)
         # print("DEBUG DEBUG")
@@ -200,9 +200,10 @@ class HumanObject:
         
         #     status = 3  # lying
         status = self.model.predict(array)
-        print(f"pred is :{status}")
+        max_index = np.argmax(status)
+        print(f"pred is :{max_index}")
         ###########################################################
-        return status
+        return max_index
 
     def _get_speed(self, data_points):
         """

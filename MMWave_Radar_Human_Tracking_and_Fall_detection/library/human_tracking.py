@@ -120,6 +120,7 @@ class HumanTracking(DataProcessor):
             self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c], self.totalArray, self.send)
             if self.send == True:
                 self.totalArray = []
+                self.send = False
               
             # by setting the poss_matrix raw & column to 0 to remove redundant clusters closed to the updated one including itself, for multiple obj bin purpose
             obj_cp_used = obj_cp_total[c]
