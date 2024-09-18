@@ -44,6 +44,7 @@ class RadarReader:
 
     def connect(self) -> bool:
         try:
+            
             cfg_port, data_port = self._connect_port(self.cfg_port_name, self.data_port_name)
             self._send_cfg(self._read_cfg(self.cfg_file_name), cfg_port, print_enable=1)
         except:
@@ -115,7 +116,8 @@ class RadarReader:
             assert cfg_port.is_open and data_port.is_open
             self._log('Hardware connected')
             return cfg_port, data_port
-        except serial.serialutil.SerialException:
+        except Exception as e:
+            self._log(f"Failed to connect, Exception: {e}")
             return
 
     # read cfg file

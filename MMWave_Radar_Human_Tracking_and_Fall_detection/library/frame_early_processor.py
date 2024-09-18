@@ -72,7 +72,6 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
 
 
     def FEP_accumulate_update(self, frame):  # ndarray(points, channels=5) of 1 frame
-       
         # append frames
         self.FEP_frame_group_deque.append(frame)
         frame_group = np.concatenate(self.FEP_frame_group_deque).astype(np.float16)  # concatenate the deque list

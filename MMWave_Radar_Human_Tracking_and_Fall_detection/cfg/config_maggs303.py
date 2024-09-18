@@ -40,7 +40,7 @@ RADAR_CFG_LIST = [
 # multiple class instantiated, single config used
 FRAME_EARLY_PROCESSOR_CFG = {  # early process config
     'FEP_frame_deque_length': 10,  # the number of frame stacked
-    'FEP_background_noise_file': './data/03_09_2024_katie_pc_bg_noise/all_samples_merged.pkl',
+    'FEP_background_noise_file': './data/03_09_2024_katie_pc_bg_noise/unique_bg_points.pkl',
     'FEP_background_removal_threshold': 0.1
 }
 

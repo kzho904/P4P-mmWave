@@ -10,6 +10,10 @@ file_path is dir+name
 All the limits are set as [a, b)
 """
 import socket
+import os
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tkinter as tk
 import tkinter.font as tkf
 from multiprocessing import Process, Manager

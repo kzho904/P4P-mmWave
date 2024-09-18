@@ -18,7 +18,7 @@ class HumanObject:
         # store the previous data
         self.obj_cp_deque = deque([], OBJ_CFG['obj_deque_length'])
         self.obj_size_deque = deque([], OBJ_CFG['obj_deque_length'])
-        self.obj_status_deque = deque(np.ones(OBJ_CFG['obj_deque_length'], dtype=int), OBJ_CFG['obj_deque_length'])  # set as standing as default
+        self.obj_status_deque = deque(np.zeros(OBJ_CFG['obj_deque_length'], dtype=int), OBJ_CFG['obj_deque_length'])  # set as standing as default
         self.obj_speed_deque = deque([], OBJ_CFG['obj_deque_length'])
         self.obj_timestamp_deque = deque([], OBJ_CFG['obj_deque_length'])
         self.obj_height_dict = {'height': 0, 'count': 0, }  # fixed property
@@ -200,7 +200,11 @@ class HumanObject:
         
         #     status = 3  # lying
         status = self.model.predict(array)
-        max_index = np.argmax(status)
+        if status[0,1] > 0.9:
+            max_index = 1
+        else:
+            max_index = 0
+        # max_index = np.argmax(status)
         print(f"pred is :{max_index}")
         ###########################################################
         return max_index
