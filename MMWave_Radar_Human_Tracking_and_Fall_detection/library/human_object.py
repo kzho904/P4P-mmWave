@@ -166,16 +166,16 @@ class HumanObject:
 
                 # get obj status
 
-                ## PROBLEM HEREEEEEEEE
-                if self.get_fuzzy_status_No:  # get comprehensive info based on previous value sequence
-                    print("test point 1")
-                    # sort the status labels, high to low
-                    unique, counts = np.unique(list(self.obj_status_deque)[-self.get_fuzzy_status_No:], return_counts=True)
-                    unique_sorted = [i[0] for i in sorted(tuple(zip(unique, counts)), key=lambda item: item[1], reverse=True)]
-                    obj_status = unique_sorted[0]  # use the label with maximum number
-                else:  # get latest info
-                    print("test point 0")
-                    obj_status = self.obj_status_deque[-1]
+                # ## PROBLEM HEREEEEEEEE
+                # if self.get_fuzzy_status_No:  # get comprehensive info based on previous value sequence
+                #     print("test point 1")
+                #     # sort the status labels, high to low
+                #     unique, counts = np.unique(list(self.obj_status_deque)[-self.get_fuzzy_status_No:], return_counts=True)
+                #     unique_sorted = [i[0] for i in sorted(tuple(zip(unique, counts)), key=lambda item: item[1], reverse=True)]
+                #     obj_status = unique_sorted[0]  # use the label with maximum number
+                # else:  # get latest info
+                
+                obj_status = self.obj_status_deque[-1]
 
                 # check if temporarily lose the target
                 if self._check_timeout(self.inactive_timeout):
