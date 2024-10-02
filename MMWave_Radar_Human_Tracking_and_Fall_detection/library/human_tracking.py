@@ -22,7 +22,7 @@ class HumanTracking(DataProcessor):
 
         # get TRK processing para
         self.TRK_people_list = []
-        self.currentSave = 290
+        self.currentSave = 123
         self.window = 0
         self.totalArray = []
         self.prev_clus = [] ##############
@@ -62,7 +62,7 @@ class HumanTracking(DataProcessor):
             for p in range(len(self.TRK_people_list)):  # for each object bin
                 point_taken_poss_matrix[c, p] = self.TRK_people_list[p].check_clus_possibility(obj_cp_total[c], obj_size_total[c])
         
-        dir = "cluster_data/padded/walking/katie_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
+        dir = "cluster_data/padded/sitting/yang_point_taken_poss_matrix" + str(self.currentSave) + ".pkl"
         # keep finding the global maximum value of the possibility matrix until no values above 0
         while point_taken_poss_matrix.size > 0 and np.max(point_taken_poss_matrix) > 0:
             
@@ -92,29 +92,29 @@ class HumanTracking(DataProcessor):
                 self.window +=1
             #print(poss_clus_list[c])
            #############SAVING SAMPLES######################
-            # if self.window == 10 and self.currentSave != 314:
-            #     print(self.currentSave)
-            #     #self.totalArray = standardizeArray(self.totalArray)
-            #     with open(dir, 'wb') as file:
-            #         pickle.dump(self.totalArray, file)
-            #     self.window = 0
-            #     self.currentSave += 1
-            #     self.totalArray = []
-            #     #normalised_array = []
-            #     standardizedArray = []
-            # elif self.currentSave != 314:
-            #     #normalised_array = normalizeArray(poss_clus_list[c])
-            #     #print(normalised_array)
-            #     #self.totalArray.append(normalised_array)
-            #     #standardizedArray = standardizeArray(poss_clus_list[c])
-            #     #print(standardizedArray)
-            #     if self.totalArray is None:
-            #         self.totalArray = poss_clus_list[c]
-            #     else:
-            #         self.totalArray.append(poss_clus_list[c])
-            #     self.window += 1
-            # else:
-            #     print("enough samples")
+            if self.window == 10 and self.currentSave != 200:
+                print(self.currentSave)
+                #self.totalArray = standardizeArray(self.totalArray)
+                with open(dir, 'wb') as file:
+                    pickle.dump(self.totalArray, file)
+                self.window = 0
+                self.currentSave += 1
+                self.totalArray = []
+                #normalised_array = []
+                # standardizedArray = []
+            elif self.currentSave != 200:
+                #normalised_array = normalizeArray(poss_clus_list[c])
+                #print(normalised_array)
+                #self.totalArray.append(normalised_array)
+                #standardizedArray = standardizeArray(poss_clus_list[c])
+                #print(standardizedArray)
+                if self.totalArray is None:
+                    self.totalArray = poss_clus_list[c]
+                else:
+                    self.totalArray.append(poss_clus_list[c])
+                self.window += 1
+            else:
+                print("enough samples")
             #append the central point and size to the corresponding object
             # print("shape is ", self.sendArray.shape)
             self.TRK_people_list[p].update_info(poss_clus_list[c], obj_cp_total[c], obj_size_total[c], self.totalArray, self.send)
