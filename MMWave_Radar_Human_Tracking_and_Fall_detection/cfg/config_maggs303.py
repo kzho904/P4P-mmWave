@@ -179,7 +179,7 @@ HUMAN_OBJECT_CFG = {  # human object config for each object bin
     'get_fuzzy_pos_No'          : 20,
     'get_fuzzy_status_No'       : 40,
 
-    'weight_path'               :'./model/checkpoints/17_09_2024_pointlstm_padded_bg_rm/best.weights.h5'
+    'weight_path'               :'./model/checkpoints/2_10_2024_pointlstm/best.weights.h5'
 }
 
 # single class instantiated, single config used

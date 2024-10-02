@@ -37,7 +37,7 @@ def create_pointnet_model(input_shape, num_features, NUM_CLASSES):
 def load_model(weight_path):
     input_shape = (300, 5)
     num_features = 5
-    num_classes = 2
+    num_classes = 4
     print("loading")
     model = create_pointnet_model(input_shape, num_features, num_classes)
     model.load_weights(weight_path)

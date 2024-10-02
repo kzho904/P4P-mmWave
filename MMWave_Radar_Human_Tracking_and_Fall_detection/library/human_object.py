@@ -210,15 +210,14 @@ class HumanObject:
         # elif obj_cp[2] < self.sitting_lying_threshold or current_height < self.obj_height_dict['height'] * 0.25:
         
         #     status = 3  # lying
-        status = self.model.predict(array)
-        if status[0,1] > 0.9:
-            max_index = 1
-        else:
-            max_index = 0
+        # 0: walking, 1: picking up, 2: jumping, 3: sitting
+        preds = self.model.predict(array)
+        preds = np.argmax(preds, axis=-1)
+        # preds = preds.astype(int)
         # max_index = np.argmax(status)
-        print(f"pred is :{max_index}")
+        print(f"pred is :{preds}")
         ###########################################################
-        return max_index
+        return preds[0]
 
     def _get_speed(self, data_points):
         """
