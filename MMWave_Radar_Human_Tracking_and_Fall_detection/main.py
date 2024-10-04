@@ -25,23 +25,23 @@ import config
 from library import RadarReader, Visualizer, SyncMonitor
 try:
     from library import SaveCenter
-    SVC_enable = True
+    SVC_enable = False
 except:
     print("save center cannot be imported")
     pass
 try:
     from library import Camera
-    CAM_enable = True
+    CAM_enable = False
 except:
     pass
 try:
     from library import EmailNotifier
-    EMN_enable = True
+    EMN_enable = False
 except:
     pass
 try:
     from library import VideoCompressor
-    VDC_enable = True
+    VDC_enable = False
 except:
     pass
 
@@ -160,15 +160,15 @@ if __name__ == '__main__':
     
 
     # optional processes, can be disabled
-    try:
-        kwargs_CFG.update({'SAVE_CENTER_CFG': SAVE_CENTER_CFG})
-        shared_param_dict.update({'save_queue': Manager().Queue(maxsize=2000)})
-        if SVC_enable:
-            save_proc = Process(target=save_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
-            proc_list.append(save_proc)
-    except:
-        print("save center cannot be enabled")
-        pass
+    # try:
+    #     kwargs_CFG.update({'SAVE_CENTER_CFG': SAVE_CENTER_CFG})
+    #     shared_param_dict.update({'save_queue': Manager().Queue(maxsize=2000)})
+    #     if SVC_enable:
+    #         save_proc = Process(target=save_proc_method, args=(run_flag, shared_param_dict), kwargs=kwargs_CFG)
+    #         proc_list.append(save_proc)
+    # except:
+    #     print("save center cannot be enabled")
+    #     pass
     # try:
     #     kwargs_CFG.update({'CAMERA_CFG': CAMERA_CFG})
     #     if CAM_enable:
