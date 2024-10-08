@@ -62,8 +62,8 @@ class Visualizer:
         matplotlib.use('TkAgg')  # set matplotlib backend
         plt.rcParams['toolbar'] = 'None'  # disable the toolbar
         # create a figure
-        self.fig = plt.figure()
-        self.fig = plt.figure(figsize=(10, 10))
+        #self.fig = plt.figure()
+        self.fig = plt.figure(figsize=(11, 11))
         # adjust figure position
         mngr = plt.get_current_fig_manager()
         mngr.window.wm_geometry('+30+30')
