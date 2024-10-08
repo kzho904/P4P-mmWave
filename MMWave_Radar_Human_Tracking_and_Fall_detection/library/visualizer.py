@@ -65,7 +65,7 @@ class Visualizer:
         self.fig = plt.figure()
         # adjust figure position
         mngr = plt.get_current_fig_manager()
-        mngr.window.wm_geometry('+30+30')
+        mngr.window.wm_geometry('+60+60')
         # draws a completely frameless window
         win = plt.gcf().canvas.manager.window
         win.overrideredirect(1)
