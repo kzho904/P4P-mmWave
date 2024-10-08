@@ -114,14 +114,14 @@ def test_proc_method(_run_flag, _shared_param_dict):
         _run_flag.value = False
         top.destroy()
         
-    top = tk.Tk()
-    top.wm_attributes('-topmost', 1)  # keep the window at the top
-    top.overrideredirect(True)  # remove label area
-    top.geometry('+40+510')
-    top.resizable(False, False)
-    tk.Button(top, text='Capture', bg='lightblue', width=12, font=gui_button_style(), command=shot).grid(row=1, column=1)
-    tk.Button(top, text='Quit', bg='lightblue', width=12, font=gui_button_style(), command=quit).grid(row=1, column=2)
-    top.mainloop()
+    #top = tk.Tk()
+    #top.wm_attributes('-topmost', 1)  # keep the window at the top
+    #top.overrideredirect(True)  # remove label area
+    #top.geometry('+200+800')
+    #top.resizable(False, False)
+    #tk.Button(top, text='Capture', bg='lightblue', width=12, font=gui_button_style(), command=shot).grid(row=1, column=1)
+    #tk.Button(top, text='Quit', bg='lightblue', width=12, font=gui_button_style(), command=quit).grid(row=1, column=2)
+    #top.mainloop()
 
 
 if __name__ == '__main__':
