@@ -63,6 +63,7 @@ class Visualizer:
         plt.rcParams['toolbar'] = 'None'  # disable the toolbar
         # create a figure
         self.fig = plt.figure()
+        self.fig = plt.figure(figsize=(10, 10))
         # adjust figure position
         mngr = plt.get_current_fig_manager()
         mngr.window.wm_geometry('+30+30')
@@ -110,7 +111,7 @@ class Visualizer:
                 ax1.set_ylabel('y')
                 ax1.set_zlabel('z')
                 ax1.set_title('Radar')
-                spin += 0.04
+                #spin += 0.04
                 ax1.view_init(ax1.elev - 0.5 * math.sin(spin), ax1.azim - 0.3 * math.sin(0.2 * spin))  # spin the view angle
                 # update the canvas
                 self._update_canvas(ax1)
