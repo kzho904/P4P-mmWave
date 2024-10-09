@@ -18,6 +18,7 @@ from library.frame_post_processor import FramePProcessor
 RP_colormap = ['C5', 'C7', 'C8']  # the colormap for radar raw points
 ES_colormap = ['lavender', 'thistle', 'violet', 'darkorchid', 'indigo']  # the colormap for radar energy strength
 OS_colormap = ['green', 'gold', 'red', 'blue' ]  # the colormap for object status
+OS_labels = ['Status 0', 'Status 1', 'Status 2', 'Status 3']  # Add labels for each status
 
 
 class Visualizer:
@@ -63,7 +64,14 @@ class Visualizer:
         plt.rcParams['toolbar'] = 'None'  # disable the toolbar
         # create a figure
         #self.fig = plt.figure()
-        self.fig = plt.figure(figsize=(11, 11))
+        self.fig = plt.figure(figsize=(15, 11))
+         # Create main plot
+        self.ax1 = self.fig.add_subplot(121)  # Main radar plot
+        # Create color status plot
+        self.ax2 = self.fig.add_subplot(122)  # Object status plot
+        self.status_rect1 = self.ax2.add_patch(plt.Rectangle((0.2, 0.6), 0.6, 0.2, color='grey'))  # First block
+        self.status_rect2 = self.ax2.add_patch(plt.Rectangle((0.2, 0.2), 0.6, 0.2, color='grey'))  # Second block
+
         # adjust figure position
         mngr = plt.get_current_fig_manager()
         mngr.window.wm_geometry('+30+30')
@@ -74,6 +82,15 @@ class Visualizer:
         plt.ion()
 
         self._log('Start...')
+        # Set up the object status plot
+        self.ax2.set_title('Object Status')
+        self.ax2.set_xlim(0, 1)
+        self.ax2.set_ylim(0, 1)
+        self.ax2.axis('off')  # Turn off the axes for a cleaner look
+
+        # Draw legend
+        for i, color in enumerate(OS_colormap):
+            self.ax2.barh(i, 0.5, color=color, edgecolor='black')
 
     def run(self):
         if self.dimension == '2D':
@@ -213,8 +230,29 @@ class Visualizer:
 
         # wait at the end of each loop
         # plt.pause(0.001)
+        self._update_object_status_plot()
         self._detect_key_press(0.001)
 
+    def _update_object_status_plot(self):
+        if self.fpp.TRK_enable:
+            # Initialize maximum statuses for two persons
+            max_status1 = -1
+            max_status2 = -1
+            
+            for i, person in enumerate(self.fpp.TRK_people_list):
+                _, obj_status = person.get_info()
+                if obj_status >= 0:
+                    if i == 0:  # First person
+                        max_status1 = max(max_status1, obj_status)
+                    elif i == 1:  # Second person
+                        max_status2 = max(max_status2, obj_status)
+
+            # Update colors based on the highest statuses
+            self.status_rect1.set_color(OS_colormap[max_status1] if max_status1 >= 0 else 'grey')
+            self.status_rect2.set_color(OS_colormap[max_status2] if max_status2 >= 0 else 'grey')
+
+
+            
     def _plot(self, ax, x, y, z, fmt='', **kwargs):
         """
         :param ax: the current canvas
