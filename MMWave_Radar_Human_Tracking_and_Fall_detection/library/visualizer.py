@@ -13,13 +13,12 @@ import numpy as np
 # import winsound
 from matplotlib import pyplot as plt
 from matplotlib.ticker import LinearLocator
-
 from library.frame_post_processor import FramePProcessor
 
 RP_colormap = ['C5', 'C7', 'C8']  # the colormap for radar raw points
 ES_colormap = ['lavender', 'thistle', 'violet', 'darkorchid', 'indigo']  # the colormap for radar energy strength
 OS_colormap = ['green', 'gold', 'red', 'blue' ]  # the colormap for object status
-OS_labels = ['Status 0', 'Status 1', 'Status 2', 'Status 3']  # Add labels for each status
+OS_labels = ['Standing/Walking', 'Picking Up', 'Jumping', 'Sitting'] # Add labels for each status
 
 
 class Visualizer:
@@ -67,12 +66,15 @@ class Visualizer:
         #self.fig = plt.figure()
         self.fig = plt.figure(figsize=(15, 11))
          # Create main plot
-        self.ax1 = self.fig.add_subplot(121)  # Main radar plot
+        # self.ax1 = self.fig.add_subplot(121)  # Main radar plot
         # Create color status plot
         self.ax2 = self.fig.add_subplot(122)  # Object status plot
-        self.status_rect1 = self.ax2.add_patch(plt.Rectangle((0.4, 0.6), 0.6, 0.2, color='grey'))  # First block
-        self.status_rect2 = self.ax2.add_patch(plt.Rectangle((0.3, 0.2), 0.6, 0.2, color='grey'))  # Second block
-
+        self.status_rect1 = self.ax2.add_patch(plt.Rectangle((0.75, 0.5), 0.3, 0.2, color='grey'))  # First block
+        self.status_rect2 = self.ax2.add_patch(plt.Rectangle((0.75, 0.2), 0.3, 0.2, color='grey'))  # Second block
+    
+        self.status_text1 = self.ax2.text(0.98, 0.5 + 0.2 / 2, '', ha='right', va='center', fontsize=10, color='black')
+        self.status_text2 = self.ax2.text(0.98, 0.2 + 0.2 / 2, '', ha='right', va='center', fontsize=10, color='black')
+        self.ax2.text(1, 0.5 + 0.3, 'Object Status', ha='right', va='center', fontsize=10, color='black')
         # adjust figure position
         mngr = plt.get_current_fig_manager()
         mngr.window.wm_geometry('+30+30')
@@ -84,7 +86,7 @@ class Visualizer:
 
         self._log('Start...')
         # Set up the object status plot
-        self.ax2.set_title('Object Status')
+        
         self.ax2.set_xlim(0, 1)
         self.ax2.set_ylim(0, 1)
         self.ax2.axis('off')  # Turn off the axes for a cleaner look
@@ -97,7 +99,7 @@ class Visualizer:
         if self.dimension == '2D':
             # create a plot
             ax1 = self.fig.add_subplot(111)
-
+            ax1.set_position([-0.1, 0.1, 0.8, 0.8])
             while self.run_flag.value:
                 # clear and reset
                 plt.cla()
@@ -114,6 +116,7 @@ class Visualizer:
         elif self.dimension == '3D':
             # create a plot
             ax1 = self.fig.add_subplot(111, projection='3d')
+            # ax1.set_position([0, 0.2, 0.8, 0.8])
 
             spin = 0
             while self.run_flag.value:
@@ -128,7 +131,7 @@ class Visualizer:
                 ax1.set_xlabel('x')
                 ax1.set_ylabel('y')
                 ax1.set_zlabel('z')
-                ax1.set_title('Radar')
+                ax1.set_title('Human Tracking/Activity Visualiser')
                 #spin += 0.04
                 ax1.view_init(ax1.elev - 0.5 * math.sin(spin), ax1.azim - 0.3 * math.sin(0.2 * spin))  # spin the view angle
                 # update the canvas
@@ -251,8 +254,8 @@ class Visualizer:
             # Update colors based on the highest statuses
             self.status_rect1.set_color(OS_colormap[max_status1] if max_status1 >= 0 else 'grey')
             self.status_rect2.set_color(OS_colormap[max_status2] if max_status2 >= 0 else 'grey')
-
-
+            self.status_text1.set_text(OS_labels[max_status1] if max_status1 >= 0 else 'N/A')
+            self.status_text2.set_text(OS_labels[max_status2] if max_status1 >= 0 else 'N/A')
             
     def _plot(self, ax, x, y, z, fmt='', **kwargs):
         """
