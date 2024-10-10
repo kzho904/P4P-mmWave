@@ -30,7 +30,7 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
         self.facing_angle = RDR_CFG['facing_angle']
         with open(FEP_CFG['FEP_background_noise_file'], 'rb') as file:
             self.bg_noise = pickle.load(file)
-
+        self.BG_RM_enable = FEP_CFG['FEP_BG_RM_enable']
         self.bg_rm_threshold = FEP_CFG['FEP_background_removal_threshold']
         self.currentSave = 0
         self.window = 0
@@ -78,7 +78,8 @@ class FrameEProcessor(DataProcessor):  # early processing for frame of each rada
 
         # apply boundary filter
         frame_group = self.FEP_boundary_filter(frame_group)
-        frame_group = self.FEP_background_removal(frame_group)
+        if self.BG_RM_enable:
+            frame_group = self.FEP_background_removal(frame_group)
         # apply angle shift and position updates
         frame_group = np.concatenate([self.FEP_trans_rotation_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)
         frame_group = np.concatenate([self.FEP_trans_position_3D(frame_group[:, 0:3]), frame_group[:, 3:5]], axis=1)

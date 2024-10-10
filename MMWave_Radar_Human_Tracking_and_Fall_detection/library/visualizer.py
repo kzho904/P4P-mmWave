@@ -4,6 +4,7 @@ Designed for data visualization, abbr. VIS
 import math
 import queue
 import time
+import os
 from datetime import datetime
 from multiprocessing import Manager
 
@@ -63,7 +64,7 @@ class Visualizer:
         plt.rcParams['toolbar'] = 'None'  # disable the toolbar
         # create a figure
         #self.fig = plt.figure()
-        self.fig = plt.figure(figsize=(11, 11))
+        self.fig = plt.figure()
         # adjust figure position
         mngr = plt.get_current_fig_manager()
         mngr.window.wm_geometry('+30+30')
@@ -127,7 +128,7 @@ class Visualizer:
 
         # get values from queues of all radars
         val_data_allradar = np.ndarray([0, 5], dtype=np.float16)
-        ES_noise_allradar = np.ndarray([0, 5], dtype=np.float16)
+        # ES_noise_allradar = np.ndarray([0, 5], dtype=np.float16)
         save_data_frame = {}
         try:
             # adaptive short skip when no object is detected
@@ -141,7 +142,7 @@ class Visualizer:
                 # apply ES and speed filter for each radar channel
                 val_data, ES_noise = self.fpp.DP_ES_Speed_filter(data_1radar, RDR_CFG['ES_threshold'])
                 val_data_allradar = np.concatenate([val_data_allradar, val_data])
-                ES_noise_allradar = np.concatenate([ES_noise_allradar, ES_noise])
+                # ES_noise_allradar = np.concatenate([ES_noise_allradar, ES_noise])
                 # # draw raw point cloud
                 # self._plot(ax1, val_data[:, 0], val_data[:, 1], val_data[:, 2], marker='.', linestyle='None', color=RP_colormap[i])
 
@@ -162,7 +163,7 @@ class Visualizer:
         #val_data_allradar = self.fpp.FPP_boundary_filter(val_data_allradar)
         #ES_noise_allradar = self.fpp.FPP_boundary_filter(ES_noise_allradar)
         # apply global energy strength filter
-        val_data_allradar, global_ES_noise = self.fpp.FPP_ES_Speed_filter(val_data_allradar)
+        # val_data_allradar, global_ES_noise = self.fpp.FPP_ES_Speed_filter(val_data_allradar)
         # apply background noise filter
         #val_data_allradar = self.fpp.BGN_filter(val_data_allradar)
 
@@ -238,6 +239,18 @@ class Visualizer:
                 ax.plot(x, y, marker=kwargs['marker'], linestyle=kwargs['linestyle'], color=kwargs['color'])
             elif self.dimension == '3D':
                 ax.plot3D(x, y, z, marker=kwargs['marker'], linestyle=kwargs['linestyle'], color=kwargs['color'])
+    
+    def save_image(self):
+        # Create the directory if it doesn't exist
+        directory = "vis_image"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = os.path.join(directory, f"radar_plot_{timestamp}.png")  # Save in the vis_image directory
+        plt.savefig(filename)
+        self._log(f"Saved image as {filename}")
+
 
     def _detect_key_press(self, timeout):  # error caused if the key is pressed at very beginning (first loop)
         keyPressed = plt.waitforbuttonpress(timeout=timeout)  # detect whether key is pressed or not
@@ -246,6 +259,8 @@ class Visualizer:
             if self.the_key == 'escape':
                 self.run_flag.value = False
             # manual save trigger
+            elif self.the_key == 's':  # Use 's' key to save the image
+                self.save_image()
             if self.MANSAVE_ENABLE:
                 if self.the_key == '+':
                     # activate flag
