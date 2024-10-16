@@ -187,7 +187,7 @@ class HumanObject:
         """
         :return: (int) 1-walking, 2-jumping, 3-running, 4-falling
         """
-        array = np.array(standard_array).reshape(1,300,5)
+        #array = np.array(standard_array).reshape(1,300,5)
         # print(array.shape)
         # print(array)
         # current_height = obj_cp[2] + obj_size[2] / 2
@@ -211,13 +211,13 @@ class HumanObject:
         
         #     status = 3  # lying
         # 0: walking, 1: picking up, 2: jumping, 3: sitting
-        preds = self.model.predict(array)
-        preds = np.argmax(preds, axis=-1)
+        #preds = self.model.predict(array)
+        #preds = np.argmax(preds, axis=-1)
         # preds = preds.astype(int)
         # max_index = np.argmax(status)
-        print(f"pred is :{preds}")
+        #print(f"pred is :{preds}")
         ###########################################################
-        return preds[0]
+        return 3
 
     def _get_speed(self, data_points):
         """

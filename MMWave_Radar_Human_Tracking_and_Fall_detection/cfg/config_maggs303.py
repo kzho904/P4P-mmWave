@@ -132,7 +132,7 @@ HUMAN_TRACKING_CFG = {  # tracking system config
     'TRK_enable'                      : True,
 
     # Tracking system para
-    'TRK_obj_bin_number'              : 1,  # the maximum number of object which can be detected
+    'TRK_obj_bin_number'              : 2,  # the maximum number of object which can be detected
     'TRK_poss_clus_deque_length'      : 3,  # the number of possible clusters stacked before calculating the poss matrix
     'TRK_redundant_clus_remove_cp_dis': 0.8,  # the distance for remove redundant clusters closed to the updated one for multiple obj bin purpose
 }
