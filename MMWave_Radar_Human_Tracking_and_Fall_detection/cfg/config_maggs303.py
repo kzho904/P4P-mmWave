@@ -48,9 +48,9 @@ FRAME_EARLY_PROCESSOR_CFG = {  # early process config
 # single class instantiated, single config used
 VISUALIZER_CFG = {
     'dimension'               : '3D',  # only effect visualizer demo,
-    'VIS_xlim'                : (-3, 3),
+    'VIS_xlim'                : (-3, 1),
     'VIS_ylim'                : (0, 4.75),
-    'VIS_zlim'                : (0, 2),
+    'VIS_zlim'                : (0, 2.2),
 
     'auto_inactive_skip_frame': int(1 * RADAR_FPS),  # frames, the time period will be skipped when auto is inactive
 }
@@ -58,7 +58,7 @@ VISUALIZER_CFG = {
 # single class instantiated, single config used
 FRAME_POST_PROCESSOR_CFG = {  # post process config
     # cloud point filter para
-    'FPP_global_xlim' : (-2, 2),  # the x-direction limit for merged cloud points from all radars, set as [a, b), from global view
+    'FPP_global_xlim' : (-2, 1),  # the x-direction limit for merged cloud points from all radars, set as [a, b), from global view
     'FPP_global_ylim' : (0, 4),
     'FPP_global_zlim' : (0, 2),
     'FPP_ES_threshold': {'range': None, 'speed_none_0_exception': True},  # the points in this energy strength range will be preserved, if speed_none_0_exception is True, then the data with low ES but with speed will be reserved
@@ -132,7 +132,7 @@ HUMAN_TRACKING_CFG = {  # tracking system config
     'TRK_enable'                      : True,
 
     # Tracking system para
-    'TRK_obj_bin_number'              : 2,  # the maximum number of object which can be detected
+    'TRK_obj_bin_number'              : 1,  # the maximum number of object which can be detected
     'TRK_poss_clus_deque_length'      : 3,  # the number of possible clusters stacked before calculating the poss matrix
     'TRK_redundant_clus_remove_cp_dis': 0.8,  # the distance for remove redundant clusters closed to the updated one for multiple obj bin purpose
 }
@@ -180,7 +180,7 @@ HUMAN_OBJECT_CFG = {  # human object config for each object bin
     'get_fuzzy_pos_No'          : 20,
     'get_fuzzy_status_No'       : 40,
 
-    'weight_path'               :'./model/checkpoints/2_10_2024_testing_complete_data/best.weights.h5'
+    'weight_path'               :'./model/checkpoints/demo/best.weights.h5'
 }
 
 # single class instantiated, single config used

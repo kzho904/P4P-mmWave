@@ -17,8 +17,8 @@ from library.frame_post_processor import FramePProcessor
 
 RP_colormap = ['C5', 'C7', 'C8']  # the colormap for radar raw points
 ES_colormap = ['lavender', 'thistle', 'violet', 'darkorchid', 'indigo']  # the colormap for radar energy strength
-OS_colormap = ['green', 'gold', 'red', 'blue' ]  # the colormap for object status
-OS_labels = ['Standing/Walking', 'Picking Up', 'Jumping', 'Sitting'] # Add labels for each status
+OS_colormap = ['red', 'gold', 'blue', 'green' ]  # the colormap for object status
+OS_labels = ['Jumping', 'Picking Up', 'Sitting', 'Walking'] # Add labels for each status
 
 
 class Visualizer:
@@ -255,7 +255,7 @@ class Visualizer:
             self.status_rect1.set_color(OS_colormap[max_status1] if max_status1 >= 0 else 'grey')
             self.status_rect2.set_color(OS_colormap[max_status2] if max_status2 >= 0 else 'grey')
             self.status_text1.set_text(OS_labels[max_status1] if max_status1 >= 0 else 'N/A')
-            self.status_text2.set_text(OS_labels[max_status2] if max_status1 >= 0 else 'N/A')
+            self.status_text2.set_text('N/A')
             
     def _plot(self, ax, x, y, z, fmt='', **kwargs):
         """
